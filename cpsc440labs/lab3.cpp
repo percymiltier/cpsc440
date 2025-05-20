@@ -2,7 +2,7 @@
 #include <allegro5/allegro_primitives.h>
 #include <cstdio>
 
-int lab2(int argc, char** argv) {
+int main(int argc, char** argv) {
 
 	// set up allegro display
 	ALLEGRO_DISPLAY* display = NULL;
@@ -23,8 +23,10 @@ int lab2(int argc, char** argv) {
 		return -1;
 	}
 
-	// establish coords
+
 	bool done = false;
+
+	// mouse coords
 	int pos_x = width / 2;
 	int pos_y = height / 2;
 
@@ -32,40 +34,22 @@ int lab2(int argc, char** argv) {
 	ALLEGRO_EVENT ev;
 
 	al_init_primitives_addon();
-	al_install_keyboard();
+	al_install_mouse();
 
 	event_queue = al_create_event_queue();
 
-	al_register_event_source(event_queue, al_get_keyboard_event_source());
+	al_register_event_source(event_queue, al_get_mouse_event_source());
 
 	// game loop
 	while (!done)
 	{
 		al_wait_for_event(event_queue, &ev);
 
-		// establish key commands
-		if (ev.type == ALLEGRO_EVENT_KEY_DOWN)
+		// establish mouse coords
+		if (ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
 		{
-			switch (ev.keyboard.keycode)
-			{
-			case ALLEGRO_KEY_UP:
-				pos_y -= 10;
-				break;
-			case ALLEGRO_KEY_DOWN:
-				pos_y += 10;
-				break;
-			case ALLEGRO_KEY_RIGHT:
-				pos_x += 10;
-				break;
-			case ALLEGRO_KEY_LEFT:
-				pos_x -= 10;
-				break;
-			}
-		}
-		else if (ev.type == ALLEGRO_EVENT_KEY_UP)
-		{
-			if (ev.keyboard.keycode == ALLEGRO_KEY_ESCAPE)
-				done = true;
+			pos_x = ev.mouse.x;
+			pos_y = ev.mouse.y;
 		}
 
 		// draw cute object :-)
