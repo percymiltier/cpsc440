@@ -2,7 +2,7 @@
 #include <allegro5/allegro_primitives.h>
 #include <cstdio>
 
-int main(int argc, char** argv) {
+int lab1(int argc, char** argv) {
 
 	// set up allegro display
 	ALLEGRO_DISPLAY* display = NULL;
