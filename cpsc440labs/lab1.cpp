@@ -1,8 +1,9 @@
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
 #include <cstdio>
+#include "labRunner.h"
 
-int lab1(int argc, char** argv) {
+int lab1() {
 
 	// set up allegro display
 	ALLEGRO_DISPLAY* display = NULL;
@@ -39,4 +40,5 @@ int lab1(int argc, char** argv) {
 
 	al_rest(20);
 	al_destroy_display(display);
+	return 0;
 }
