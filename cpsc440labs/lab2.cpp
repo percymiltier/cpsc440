@@ -61,6 +61,22 @@ int lab2() {
 			case ALLEGRO_KEY_LEFT:
 				pos_x -= 10;
 				break;
+			case ALLEGRO_KEY_U:
+				pos_x -= 10;
+				pos_y -= 10;
+				break;
+			case ALLEGRO_KEY_D:
+				pos_x += 10;
+				pos_y += 10;
+				break;
+			case ALLEGRO_KEY_R:
+				pos_x += 10;
+				pos_y -= 10;
+				break;
+			case ALLEGRO_KEY_L:
+				pos_x -= 10;
+				pos_y += 10;
+				break;
 			}
 		}
 		else if (ev.type == ALLEGRO_EVENT_KEY_UP)

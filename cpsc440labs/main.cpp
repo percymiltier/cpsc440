@@ -8,11 +8,17 @@ int main() {
 	cout << "1 2 3 \n\n";
 	int a;
 	cin >> a;
-	
-	do {
-		cout << "Enter a valid lab number: \n";
-		cout << "1 2 3 \n\n";
-	} while (cin >> a && a < 1 || a > 3);
+
+	while (1) {
+		if (a == 1 || a == 2 || a == 3) {
+			break;
+		}
+		else {
+			cout << "Enter a valid lab number: \n";
+			cout << "1 2 3 \n\n";
+			cin >> a;
+		}
+	}
 
 	if (a == 1) {
 		lab1();
