@@ -1,137 +1,121 @@
 #include <allegro5/allegro.h>
-#include <allegro5/allegro_primitives.h>
 #include <cstdio>
 #include <allegro5/allegro_native_dialog.h>
 #include "labRunner.h"
-#include <allegro5/allegro_font.h>
-#include <allegro5/allegro_ttf.h>
 #include <iostream>
 #include <fstream>
-#include "logic1.h"
+#include "logic.h"
 using namespace std;
+
+void* input(ALLEGRO_THREAD* ptr, void* arg);
+void* timer(ALLEGRO_THREAD* ptr, void* arg);
+
+bool finished = false;
+bool timeOut = false;
+logic game;
 
 int pa1() {
 
-	// set up allegro display
-	ALLEGRO_DISPLAY* display = NULL;
+	ALLEGRO_THREAD* create1 = NULL, * create2 = NULL; //used for return value from thread creation
 
-	int width = 800;
-	int height = 600;
+	create1 = al_create_thread(input, NULL);
+	create2 = al_create_thread(timer, NULL);
 
-	// check if allegro can start up
-	if (!al_init()) {
-		fprintf(stderr, "Failed to start Allegro.");
-		return -1;
-	}
-
-	// create display
-	display = al_create_display(width, height);
-	if (!display) {
-		fprintf(stderr, "Failed to create display.");
-		return -1;
-	}
-
-
-	al_clear_to_color(al_map_rgb(250, 250, 250));
-
-	al_init_font_addon();
-	al_init_ttf_addon();
-
-	ALLEGRO_FONT* font24 = al_load_font("AppleGaramond.ttf", 24, 0);
-
-	ALLEGRO_EVENT_QUEUE* event_queue = NULL;
-	ALLEGRO_EVENT ev;
-
-	al_init_primitives_addon();
-	al_install_keyboard();
-
-	event_queue = al_create_event_queue();
-
-	al_register_event_source(event_queue, al_get_keyboard_event_source());
-
-	// logic init
-	logic1 game;
-	bool next = true;
-	bool result = false;
-	int turn = 0;
-	bool done = false;
-
-	// game loop
-	while (!done)
+	while (!finished && !timeOut)
 	{
-		al_draw_filled_rectangle(0, 0, width, height, al_map_rgb(250, 250, 250));
 
-		// get next word
-		int i = 0;
-		if (i < 2 && next == true) {
-			game.nextWord(1);
-			turn++;
+
+		if (!finished && !timeOut)
+		{
+			al_start_thread(create1);
+
+			al_start_thread(create2);
+
 		}
-		else if (i < 4 && next == true) {
-			game.nextWord(2);
-			turn++;
-		}
-		else if (next == true) {
-			game.nextWord(3);
-			turn++;
+		else
+		{
+			al_destroy_thread(create1);
+			al_destroy_thread(create2);
 		}
 
-		// end game on last word
-		if (turn > 5) {
-			done = true;
-		}
-
-		// draw scrambled word on screen
-		al_draw_textf(font24, al_map_rgb(0, 0, 0), 50, 50, 0, game.toCharArray(game.getScramble()));
-
-		// get user input
-		char curr[50] = "";
-		int pointer = 0;
-		al_wait_for_event(event_queue, &ev);
-		if (ev.type == ALLEGRO_EVENT_KEY_CHAR) {
-			switch (ev.keyboard.keycode) {
-				case ALLEGRO_KEY_ENTER:
-					// submit word
-					result = game.answer(game.toString(curr, strlen(curr)), game.getText());
-					break;
-				default:
-					// add char to string
-					curr[pointer] = ev.keyboard.unichar;
-					pointer++;
-					break;
-			}
-		}
-
-		// success or failure
-		if (result == true) {
-			// correct answer
-			next = true;
-		}
-
-		// display timer + score
-		al_draw_textf(font24, al_map_rgb(0, 0, 0), 50, 80, 0, "%i", game.getScore());
 
 	}
+	if (finished) {
+		cout << "\nYou got all 5 words correct! Congratulations!\n";
+	}
+	else {
+		cout << "\nTime's up!\n";
+		cout << "Final score: \n" << game.getScore();
+		int i = game.getScore();
 
-	// display final screen
-	al_draw_filled_rectangle(0, 0, width, height, al_map_rgb(250, 249, 248));
-	al_draw_textf(font24, al_map_rgb(0, 0, 0), 50, 50, 0, "Final score: %i", game.getScore());
-	if (game.getScore() <= 2) {
-		al_draw_textf(font24, al_map_rgb(0, 0, 0), 50, 80, 0, "Lowest intelligence, better luck next time!");
-	}
-	else if (game.getScore() == 3) {
-		al_draw_textf(font24, al_map_rgb(0, 0, 0), 50, 80, 0, "Getting better...");
-	}
-	else if (game.getScore() == 4) {
-		al_draw_textf(font24, al_map_rgb(0, 0, 0), 50, 80, 0, "Pretty good!");
-	}
-	else if (game.getScore() > 4) {
-		al_draw_textf(font24, al_map_rgb(0, 0, 0), 50, 80, 0, "Highest intelligence! Way to go!");
+		if (i < 3) {
+			cout << "Lowest intelligence... better luck next time.\n";
+		}
+		else if (i < 4) {
+			cout << "Getting better...\n";
+		}
+		else if (i < 5) {
+			cout << "Not bad!";
+		}
 	}
 	
-
-	al_destroy_event_queue(event_queue);
-	al_destroy_display(display);						//destroy our display object
 	system("pause");
 	return 0;
+}
+
+// A pointer to a function that prompts the user for input
+void* input(ALLEGRO_THREAD* ptr, void* arg)
+{
+	// logic init
+	int turn = 0;
+	string in;
+
+	// game loop
+	while (!finished)
+	{
+		// choose a new word
+		if (turn < 2) {
+			game.setWord(game.chooseWord(1, game));
+		}
+		else if (turn < 4) {
+			game.setWord(game.chooseWord(2, game));
+		}
+		else {
+			game.setWord(game.chooseWord(3, game));
+		}
+		turn++;
+		if (turn > 5) {
+			finished = true;
+			break;
+		}
+
+		// scramble the word and take input
+		game.setScramble(game.scrambleWord(game.getWord()));
+		cout << game.getScramble() << "\n\nEnter your guess:\n";
+		cin >> in;
+
+		while (in != game.getWord()) {
+			cout << "\nTry again:\n";
+			cin >> in;
+		}
+
+		// add to score once its correct
+		game.setScore(game.getScore() + 1);
+	}
+	return NULL;
+}
+
+// A pointer to a function that starts the timer and checks the change in
+// finished, which is in the input thread.
+void* timer(ALLEGRO_THREAD* ptr, void* arg)
+{
+	time_t startTime, currentTime; //times used to measure elapsed time
+	startTime = time(NULL);
+	currentTime = time(NULL);
+	while (currentTime - startTime < 60 && !finished)
+	{
+		currentTime = time(NULL);
+	}
+	timeOut = true;
+	return NULL;
 }

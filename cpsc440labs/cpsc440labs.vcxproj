@@ -136,12 +136,14 @@
     <ClCompile Include="lab1.cpp" />
     <ClCompile Include="lab2.cpp" />
     <ClCompile Include="lab3.cpp" />
+    <ClCompile Include="logic.cpp" />
     <ClCompile Include="logic1.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PA1.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="labRunner.h" />
+    <ClInclude Include="logic.h" />
     <ClInclude Include="logic1.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
