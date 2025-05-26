@@ -33,18 +33,12 @@
     <ClCompile Include="PA1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="logic1.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="logic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="labRunner.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="logic1.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="logic.h">
