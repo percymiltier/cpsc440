@@ -4,7 +4,7 @@
 #include "labRunner.h"
 #include <iostream>
 #include <fstream>
-#include "logic.h"
+#include "logic1.h"
 using namespace std;
 
 void* input(ALLEGRO_THREAD* ptr, void* arg);
@@ -12,7 +12,7 @@ void* timer(ALLEGRO_THREAD* ptr, void* arg);
 
 bool finished = false;
 bool timeOut = false;
-logic game;
+logic1 game;
 
 int pa1() {
 
