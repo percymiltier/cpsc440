@@ -1,4 +1,4 @@
-#include <allegro5/allegro.h>
+#include <allegro5\allegro.h>
 #include <allegro5\allegro_font.h>
 #include <allegro5\allegro_ttf.h>
 #include <allegro5\allegro_primitives.h>	
@@ -6,7 +6,7 @@
 #include "logic.h"
 
 
-void set_graphics_x_o(int x, int y, logic &game_logic);
+void set_graphics_x_o(int x, int y, logic &game_logic, int &turn);
 void draw_board();
 void draw_x(int x, int y);
 void draw_o(int x, int y);
@@ -20,6 +20,7 @@ int main(void)
 	bool gameover = false;
 	ALLEGRO_DISPLAY *Screen = NULL;
 	int width = 640, height = 480;
+	static int turn = 0;
 
 	if (!al_init())
 	{
@@ -80,12 +81,19 @@ int main(void)
 		}
 		draw_board();
 		game_message(gameover, game_logic);
-		if (draw)
+		if (draw && turn == 0)
 		{
-
-			set_graphics_x_o(posX, posY, game_logic);
+			set_graphics_x_o(posX, posY, game_logic, turn);
 
 			draw = false;
+
+		}
+		if (turn == 1) {
+			while (turn == 1) {
+				set_graphics_x_o(rand() % 640, rand() % 374, game_logic, turn);
+
+				draw = false;
+			}
 		}
 		al_flip_display();
 	}
@@ -139,9 +147,8 @@ void turn_xo(int x, int y, int &turn, int boardx, int boardy, logic  &game_logic
 		}
 	}
 }
-void set_graphics_x_o(int x, int y, logic &game_logic)
+void set_graphics_x_o(int x, int y, logic &game_logic, int &turn)
 {
-	static int turn = 0;
 	if ((x<213) && (y<125))
 	{
 		turn_xo(106, 62, turn, 0, 0, game_logic);
@@ -207,5 +214,7 @@ void game_message(bool &gameover, logic &game_logic)
 		al_draw_text(font, al_map_rgb(255, 255, 255), 1, 400, ALLEGRO_ALIGN_LEFT, "Pick a Square");
 
 }
+
+
 
 

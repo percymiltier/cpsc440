@@ -7,6 +7,7 @@ void logic::setup()
 		for (int j = 0; j<3; j++)
 			board[i][j] = 'n';
 }
+
 bool logic::set_x(int x, int y)
 {
 	if (board[x][y] == 'n')
@@ -17,6 +18,7 @@ bool logic::set_x(int x, int y)
 	return false;
 
 }
+
 bool logic::set_o(int x, int y)
 {
 	if (board[x][y] == 'n')
@@ -26,6 +28,7 @@ bool logic::set_o(int x, int y)
 	}
 	return false;
 }
+
 void logic::done(bool &tie, bool &xwon, bool &owon)
 {
 	if ((board[0][0] == 'x') && (board[0][1] == 'x') && (board[0][2] == 'x') ||
