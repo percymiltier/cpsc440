@@ -88,16 +88,16 @@ int main(void)
 			draw = false;
 
 		}
-		if (turn == 1) {
+		if (draw && turn == 1) {
 			while (turn == 1) {
 				set_graphics_x_o(rand() % 640, rand() % 374, game_logic, turn);
-
-				draw = false;
 			}
+
+			draw = false;
 		}
 		al_flip_display();
 	}
-	al_rest(5.0);
+	al_rest(5);
 	al_destroy_event_queue(event_queue);
 	al_destroy_display(Screen);						//destroy our display object
 
