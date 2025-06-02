@@ -8,7 +8,8 @@ board::board() {
 	// fill answer key with cards
 	for (int i = 0; i < 5; i++) {
 		for (int j = 0; j < 5; j++) {
-			answerkey[i][j] = card(i, j);
+			card c(i, j);
+			answerkey[i][j] = c;
 		}
 	}
 	// set up card matches
@@ -21,7 +22,7 @@ board::board() {
 		card A = answerkey[xA][yA];
 		card B = answerkey[xB][yB];
 		// if card doesn't already have a match & cards aren't the same
-		if ((!A.hasMatch()) && (A.cardEquals(B))) {
+		if ((!A.hasMatch()) && (xA != xB || yA != yB)) {
 			// set matching card shapes
 			A.setShape(i);
 			B.setShape(i);
@@ -53,17 +54,17 @@ bool board::checkGuess(card guessA, card guessB) {
 // flip a card and make a guess
 bool board::flipCard(int x, int y, int guess) {
 	if (guess == 1 && answerkey[x][y].getFlipped() == false) {
-		guessA = answerkey[x][y];
+		guessA = &answerkey[x][y];
 		answerkey[x][y].setFlipped(true);
 		return true;
 	}
 	else if (guess == 2 && answerkey[x][y].getFlipped() == false) {
-		guessB = answerkey[x][y];
+		guessB = &answerkey[x][y];
 		answerkey[x][y].setFlipped(true);
 		return true;
 	}
 	else if (guess > 2) {
-		checkGuess(guessA, guessB);
+		checkGuess(*guessA, *guessB);
 		return true;
 	}
 	else {
@@ -80,7 +81,14 @@ int board::getScore() {
 
 // card functions
 
-// constructor
+// constructors
+card::card() {
+	x = 0;
+	y = 0;
+	shape = NULL;
+	flipped = false;
+	match = NULL;
+}
 card::card(int cx, int cy) {
 	x = cx;
 	y = cy;

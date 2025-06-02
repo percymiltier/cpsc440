@@ -6,12 +6,14 @@
 #include <string>
 using namespace std;
 
+
 class graphics {
 public:
-	graphics(int displayheight, int displaywidth);
+	graphics();
+	graphics(int displayheight, int displaywidth, board* newgameboard);
 
 	void drawBoard() const;
-	void drawCards(board gameboard);
+	void drawCards();
 	void printShape(int x, int y, int shape);
 	void drawScore(int score, ALLEGRO_FONT* font);
 
@@ -20,12 +22,19 @@ public:
 private:
 	int height;
 	int width;
+	board* gameboard;
 };
 
-// constructor
-graphics::graphics(int displayheight, int displaywidth) {
+// constructors
+graphics::graphics() {
+	height = 0;
+	width = 0;
+	gameboard = NULL;
+}
+graphics::graphics(int displayheight, int displaywidth, board* newgameboard) {
 	height = displayheight;
 	width = displaywidth;
+	gameboard = newgameboard;
 }
 // draw the game board
 void graphics::drawBoard() const {
@@ -39,12 +48,12 @@ void graphics::drawBoard() const {
 	al_draw_filled_rectangle(0, height - 20, width, height, al_map_rgb(148, 192, 212));
 }
 // draw all flipped cards to the board
-void graphics::drawCards(board gameboard) {
+void graphics::drawCards() {
 	for (int i = 0; i < 5; i++) {
 		for (int j = 0; j < 5; i++) {
 			// if the card is flipped over, draw its shape on the screen
-			if (gameboard.getCard(i, j).getFlipped() == true) {
-				printShape((width / 10 + ((width / 5) * i)), ((height - 20) / 10 + (((height - 20) / 5) * i)), gameboard.getCard(i, j).getShape());
+			if (gameboard->getCard(i, j).getFlipped() == true) {
+				printShape((width / 10 + ((width / 5) * i)), ((height - 20) / 10 + (((height - 20) / 5) * i)), gameboard->getCard(i, j).getShape());
 			}
 		}
 	}
@@ -117,5 +126,9 @@ int graphics::getCoord(int click, string type) {
 	}
 	else if (type == "y") {
 		return click / spacerY;
+	}
+	else {
+		// not a valid type
+		return -1;
 	}
 }

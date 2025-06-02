@@ -1,6 +1,4 @@
-#include "logic.h"
 #include "graphics.cpp"
-#include "labRunner.h"
 
 int main() {
 	// set up allegro display
@@ -29,9 +27,9 @@ int main() {
 	bool gameover = false;
 	int guess = 1;
 	int coordX, coordY;
-	bool draw;
-	graphics g = graphics(height, width);
-	board b = board();
+	bool draw = false;
+	board b;
+	graphics g(height, width, &b);
 
 	// initializing
 	al_init_primitives_addon();
@@ -79,7 +77,7 @@ int main() {
 		if (draw) {
 			// redraw board
 			g.drawBoard();
-			g.drawCards(b);
+			g.drawCards();
 			g.drawScore(b.getScore(), font);
 		}
 

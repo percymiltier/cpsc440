@@ -1,21 +1,10 @@
-class board {
-public:
-	board();
-	bool checkGuess(card guessA, card guessB);
-	bool flipCard(int x, int y, int guess);
-
-	// getters
-	card getCard(int i, int j);
-	int getScore();
-private:
-	card* guessA;
-	card* guessB;
-	card answerkey[5][5];
-	int score;
-};
+#pragma once
+#ifndef LOGIC_H
+#define LOGIC_H
 
 class card {
 public:
+	card();
 	card(int cx, int cy);
 
 	bool hasMatch() const;
@@ -39,3 +28,21 @@ private:
 	int x;
 	int y;
 };
+
+class board {
+public:
+	board();
+	bool checkGuess(card guessA, card guessB);
+	bool flipCard(int x, int y, int guess);
+
+	// getters
+	card getCard(int i, int j);
+	int getScore();
+private:
+	card* guessA;
+	card* guessB;
+	card answerkey[5][5];
+	int score;
+};
+
+#endif
