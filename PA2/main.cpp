@@ -1,4 +1,5 @@
-#include "graphics.cpp"
+#include "graphics.h"
+#include <allegro5/allegro_ttf.h>
 
 int main() {
 	// set up allegro display
@@ -42,6 +43,11 @@ int main() {
 	ALLEGRO_EVENT ev;
 	ALLEGRO_FONT* font = al_load_font("AppleGaramond.ttf", 24, 0);
 
+	if (!font) {
+		fprintf(stderr, "Failed to initialize font.");
+		return -1;
+	}
+
 	event_queue = al_create_event_queue();
 
 	al_register_event_source(event_queue, al_get_mouse_event_source());
@@ -54,33 +60,67 @@ int main() {
 	// game loop
 	while (!done)
 	{
-		// wait for mouse click
-		al_wait_for_event(event_queue, &ev);
+		if (guess <  3) {
+			// wait for mouse click
+			al_wait_for_event(event_queue, &ev);
 
-		// establish mouse coords
-		if (ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
-		{
-			pos_x = ev.mouse.x;
-			pos_y = ev.mouse.y;
-			// flip clicked card
-			coordX = g.getCoord(pos_x, "x");
-			coordY = g.getCoord(pos_y, "y");
+			// establish mouse coords
+			if (ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
+			{
+				pos_x = ev.mouse.x;
+				pos_y = ev.mouse.y;
+				coordX = g.getCoord(pos_x, "x");
+				coordY = g.getCoord(pos_y, "y");
 
-			if (!b.flipCard(coordX, coordY, guess)) {
-				draw = false;
-			}
-			else {
-				draw = true;
+				// flip clicked card
+				if (!b.flipCard(coordX, coordY, guess)) {
+					draw = false;
+				}
+				else {
+					guess++;
+					if (guess > 3) {
+						guess = 1;
+					}
+					draw = true;
+				}
 			}
 		}
+		else {
+			// guesses are filled
+			if (!b.checkGuess(*b.getA(), *b.getB())) {
+				g.drawBoard();
+				g.drawCards();
+				g.drawScore(b.getScore(), font);
+				al_flip_display();
+				al_clear_to_color(al_map_rgb(0, 0, 0));
+				// if its a wrong guess, pause before cleaning the card
+				al_rest(5);
+			}
+			guess = 1;
+			draw = true;
+		}
 
+		// redraw board
 		if (draw) {
-			// redraw board
 			g.drawBoard();
 			g.drawCards();
 			g.drawScore(b.getScore(), font);
+			al_flip_display();
+			al_clear_to_color(al_map_rgb(0, 0, 0));
 		}
 
+		// once all cards are matched
+		if (b.getScore() >= 12) {
+			done = true;
+		}
+
+	}
+
+	while (done) {
+		al_draw_filled_rectangle(0, height - 30, width, height, al_map_rgb(148, 192, 212));
+		al_draw_line(0, height - 30, width, height - 30, al_map_rgb(255, 255, 255), 2);
+		al_draw_textf(font, al_map_rgb(255, 255, 255), 10, height - 29, 0, "Found all matches!");
+		al_flip_display();
 	}
 
 	// cleanup

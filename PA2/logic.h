@@ -1,30 +1,32 @@
+
 #pragma once
 #ifndef LOGIC_H
 #define LOGIC_H
+
+#include <stdlib.h>
 
 class card {
 public:
 	card();
 	card(int cx, int cy);
 
-	bool hasMatch() const;
 	bool cardEquals(card B);
 
 	// getters
 	int getShape();
 	bool getFlipped();
-	card* getMatch();
+	bool getMatch();
 	int getX();
 	int getY();
 
 	// setters
 	void setShape(int newshape);
 	void setFlipped(bool flip);
-	void setMatch(card* newmatch);
+	void setMatch(bool newmatch);
 private:
 	bool flipped;
 	int shape;
-	card* match;
+	bool match;
 	int x;
 	int y;
 };
@@ -33,11 +35,13 @@ class board {
 public:
 	board();
 	bool checkGuess(card guessA, card guessB);
-	bool flipCard(int x, int y, int guess);
+	bool flipCard(int y, int x, int guess);
 
 	// getters
-	card getCard(int i, int j);
+	card* getCard(int i, int j);
 	int getScore();
+	card* getA();
+	card* getB();
 private:
 	card* guessA;
 	card* guessB;

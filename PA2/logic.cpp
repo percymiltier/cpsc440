@@ -1,5 +1,4 @@
 #include "logic.h"
-#include <stdlib.h>
 
 // board functions
 
@@ -13,7 +12,8 @@ board::board() {
 		}
 	}
 	// set up card matches
-	for (int i = 0; i < 12; i++) {
+	int i = 0;
+	while (i < 12) {
 		// pick cards randomly
 		int xA = rand() % 5;
 		int yA = rand() % 5;
@@ -22,18 +22,22 @@ board::board() {
 		card A = answerkey[xA][yA];
 		card B = answerkey[xB][yB];
 		// if card doesn't already have a match & cards aren't the same
-		if ((!A.hasMatch()) && (xA != xB || yA != yB)) {
+		if (!A.getMatch() && !B.getMatch() && (xA != xB || yA != yB)) {
 			// set matching card shapes
 			A.setShape(i);
 			B.setShape(i);
 			// set matches
-			A.setMatch(&B);
-			B.setMatch(&A);
+			A.setMatch(true);
+			B.setMatch(true);
 			// send cards back to board
 			answerkey[xA][yA] = A;
 			answerkey[xB][yB] = B;
+			i++;
 		}
 	}
+	score = 0;
+	guessA = NULL;
+	guessB = NULL;
 }
 // returns whether 2 cards match
 bool board::checkGuess(card guessA, card guessB) {
@@ -52,31 +56,41 @@ bool board::checkGuess(card guessA, card guessB) {
 	}
 }
 // flip a card and make a guess
-bool board::flipCard(int x, int y, int guess) {
-	if (guess == 1 && answerkey[x][y].getFlipped() == false) {
-		guessA = &answerkey[x][y];
-		answerkey[x][y].setFlipped(true);
-		return true;
-	}
-	else if (guess == 2 && answerkey[x][y].getFlipped() == false) {
-		guessB = &answerkey[x][y];
-		answerkey[x][y].setFlipped(true);
-		return true;
-	}
-	else if (guess > 2) {
-		checkGuess(*guessA, *guessB);
-		return true;
+bool board::flipCard(int y, int x, int guess) {
+	// make sure card isn't already flipped over
+	if (answerkey[x][y].getFlipped() == false) {
+		if (guess == 1) {
+			guessA = &answerkey[x][y];
+			answerkey[x][y].setFlipped(true);
+			return true;
+		}
+		else if (guess == 2) {
+			guessB = &answerkey[x][y];
+			answerkey[x][y].setFlipped(true);
+			return true;
+		}
+		else if (guess > 2) {
+			checkGuess(*guessA, *guessB);
+			return true;
+		}
 	}
 	else {
 		return false;
 	}
 }
 // getters
-card board::getCard(int i, int j) {
-	return answerkey[i][j];
+card* board::getCard(int i, int j) {
+	card* ptr = &answerkey[i][j];
+	return ptr;
 }
 int board::getScore() {
 	return score;
+}
+card* board::getA() {
+	return guessA;
+}
+card* board::getB() {
+	return guessB;
 }
 
 // card functions
@@ -87,21 +101,14 @@ card::card() {
 	y = 0;
 	shape = NULL;
 	flipped = false;
-	match = NULL;
+	match = false;
 }
 card::card(int cx, int cy) {
 	x = cx;
 	y = cy;
 	shape = NULL;
 	flipped = false;
-	match = NULL;
-}
-// returns if the card has a match or not already
-bool card::hasMatch() const {
-	if (match == NULL) {
-		return false;
-	}
-	else return true;
+	match = false;
 }
 // setters
 void card::setShape(int newshape) {
@@ -110,7 +117,7 @@ void card::setShape(int newshape) {
 void card::setFlipped(bool flip) {
 	flipped = flip;
 }
-void card::setMatch(card* newmatch) {
+void card::setMatch(bool newmatch) {
 	match = newmatch;
 }
 // getters 
@@ -120,7 +127,7 @@ int card::getShape() {
 bool card::getFlipped() {
 	return flipped;
 }
-card* card::getMatch() {
+bool card::getMatch() {
 	return match;
 }
 int card::getX() {
