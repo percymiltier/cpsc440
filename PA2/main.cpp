@@ -87,14 +87,13 @@ int main() {
 		}
 		else {
 			// guesses are filled
-			if (!b.checkGuess(*b.getA(), *b.getB())) {
-				g.drawBoard();
-				g.drawCards();
-				g.drawScore(b.getScore(), font);
-				al_flip_display();
+			if (!b.checkGuess(b.getA(), b.getB())) {
 				al_clear_to_color(al_map_rgb(0, 0, 0));
+				g.drawBoard();
+				g.drawCards(1);
+				g.drawScore(b.getScore(), font);
 				// if its a wrong guess, pause before cleaning the card
-				al_rest(5);
+				al_rest(2);
 			}
 			guess = 1;
 			draw = true;
@@ -102,11 +101,11 @@ int main() {
 
 		// redraw board
 		if (draw) {
+			al_clear_to_color(al_map_rgb(0, 0, 0));
 			g.drawBoard();
-			g.drawCards();
+			g.drawCards(0);
 			g.drawScore(b.getScore(), font);
 			al_flip_display();
-			al_clear_to_color(al_map_rgb(0, 0, 0));
 		}
 
 		// once all cards are matched
@@ -116,12 +115,16 @@ int main() {
 
 	}
 
-	while (done) {
-		al_draw_filled_rectangle(0, height - 30, width, height, al_map_rgb(148, 192, 212));
-		al_draw_line(0, height - 30, width, height - 30, al_map_rgb(255, 255, 255), 2);
-		al_draw_textf(font, al_map_rgb(255, 255, 255), 10, height - 29, 0, "Found all matches!");
-		al_flip_display();
-	}
+	al_clear_to_color(al_map_rgb(0, 0, 0));
+	g.drawBoard();
+	g.drawCards(3);
+	al_draw_filled_rectangle(0, height - 30, width, height, al_map_rgb(148, 192, 212));
+	al_draw_line(0, height - 30, width, height - 30, al_map_rgb(255, 255, 255), 2);
+	al_draw_textf(font, al_map_rgb(255, 255, 255), 10, height - 29, 0, "Found all matches!");
+	al_flip_display();
+
+	al_rest(5);
+
 
 	// cleanup
 	al_destroy_event_queue(event_queue);

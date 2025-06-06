@@ -23,6 +23,7 @@ public:
 	void setShape(int newshape);
 	void setFlipped(bool flip);
 	void setMatch(bool newmatch);
+	void setCoords(int newx, int newy);
 private:
 	bool flipped;
 	int shape;
@@ -34,7 +35,7 @@ private:
 class board {
 public:
 	board();
-	bool checkGuess(card guessA, card guessB);
+	bool checkGuess(card* guessA, card* guessB);
 	bool flipCard(int y, int x, int guess);
 
 	// getters
@@ -45,7 +46,7 @@ public:
 private:
 	card* guessA;
 	card* guessB;
-	card answerkey[5][5];
+	card* answerkey[5][5];
 	int score;
 };
 

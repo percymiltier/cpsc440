@@ -7,8 +7,7 @@ board::board() {
 	// fill answer key with cards
 	for (int i = 0; i < 5; i++) {
 		for (int j = 0; j < 5; j++) {
-			card c(i, j);
-			answerkey[i][j] = c;
+			answerkey[i][j] = new card(i, j);
 		}
 	}
 	// set up card matches
@@ -19,29 +18,26 @@ board::board() {
 		int yA = rand() % 5;
 		int xB = rand() % 5;
 		int yB = rand() % 5;
-		card A = answerkey[xA][yA];
-		card B = answerkey[xB][yB];
+		card* A = getCard(xA, yA);
+		card* B = getCard(xB, yB);
 		// if card doesn't already have a match & cards aren't the same
-		if (!A.getMatch() && !B.getMatch() && (xA != xB || yA != yB)) {
+		if (!A->getMatch() && !B->getMatch() && !(xA == xB && yA == yB)) {
 			// set matching card shapes
-			A.setShape(i);
-			B.setShape(i);
+			A->setShape(i);
+			B->setShape(i);
 			// set matches
-			A.setMatch(true);
-			B.setMatch(true);
-			// send cards back to board
-			answerkey[xA][yA] = A;
-			answerkey[xB][yB] = B;
+			A->setMatch(true);
+			B->setMatch(true);
 			i++;
 		}
 	}
 	score = 0;
-	guessA = NULL;
-	guessB = NULL;
+	guessA = nullptr;
+	guessB = nullptr;
 }
 // returns whether 2 cards match
-bool board::checkGuess(card guessA, card guessB) {
-	if (guessA.getShape() == guessB.getShape()) {
+bool board::checkGuess(card* guessA, card* guessB) {
+	if (guessA->getShape() == guessB->getShape()) {
 		// update score if there was a match
 		score++;
 
@@ -49,8 +45,11 @@ bool board::checkGuess(card guessA, card guessB) {
 	}
 	else {
 		// flip cards back
-		guessA.setFlipped(false);
-		guessB.setFlipped(false);
+		guessA->setFlipped(false);
+		guessB->setFlipped(false);
+
+		guessA = nullptr;
+		guessB = nullptr;
 		
 		return false;
 	}
@@ -58,19 +57,19 @@ bool board::checkGuess(card guessA, card guessB) {
 // flip a card and make a guess
 bool board::flipCard(int y, int x, int guess) {
 	// make sure card isn't already flipped over
-	if (answerkey[x][y].getFlipped() == false) {
+	if (answerkey[x][y]->getFlipped() == false) {
 		if (guess == 1) {
-			guessA = &answerkey[x][y];
-			answerkey[x][y].setFlipped(true);
+			guessA = answerkey[x][y];
+			answerkey[x][y]->setFlipped(true);
 			return true;
 		}
 		else if (guess == 2) {
-			guessB = &answerkey[x][y];
-			answerkey[x][y].setFlipped(true);
+			guessB = answerkey[x][y];
+			answerkey[x][y]->setFlipped(true);
 			return true;
 		}
 		else if (guess > 2) {
-			checkGuess(*guessA, *guessB);
+			checkGuess(guessA, guessB);
 			return true;
 		}
 	}
@@ -80,7 +79,7 @@ bool board::flipCard(int y, int x, int guess) {
 }
 // getters
 card* board::getCard(int i, int j) {
-	card* ptr = &answerkey[i][j];
+	card* ptr = answerkey[i][j];
 	return ptr;
 }
 int board::getScore() {
@@ -135,6 +134,10 @@ int card::getX() {
 }
 int card::getY() {
 	return y;
+}
+void card::setCoords(int newx, int newy) {
+	x = newx;
+	y = newy;
 }
 // ops
 bool card::cardEquals(card B) {

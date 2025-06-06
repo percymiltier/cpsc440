@@ -22,65 +22,85 @@ void graphics::drawBoard() const {
 	}
 }
 // draw all flipped cards to the board
-void graphics::drawCards() {
+void graphics::drawCards(int flag) {
 	for (int i = 0; i < 5; i++) {
 		for (int j = 0; j < 5; j++) {
 			// if the card is flipped over, draw its shape on the screen
 			if (gameboard->getCard(i, j)->getFlipped() == true) {
-				printShape((width / 10 + ((width / 5) * j)), ((height - 30) / 10 + (((height - 30) / 5) * i)), gameboard->getCard(i, j)->getShape());
+				printShape((width / 10 + ((width / 5) * j)), ((height - 30) / 10 + (((height - 30) / 5) * i)), gameboard->getCard(i, j)->getShape(), flag);
 			}
 		}
 	}
 }
 // print the specific shape that corresponds with the card
-void graphics::printShape(int x, int y, int shape) {
+void graphics::printShape(int x, int y, int shape, int flag) {
+	// pick colors 
+	int color[3];
+	switch (flag) {
+	case 1:
+		color[0] = 255;
+		color[1] = 0;
+		color[2] = 0;
+		break;
+	case 2:
+		color[0] = 0;
+		color[1] = 255;
+		color[2] = 0;
+		break;
+	default:
+		color[0] = 255;
+		color[1] = 255;
+		color[2] = 255;
+		break;
+	}
+
 	switch (shape) {
 	case 0:			// circle
-		al_draw_circle(x, y, 10, al_map_rgb(255, 255, 255), 2);
+		al_draw_circle(x, y, 10, al_map_rgb(color[0], color[1], color[2]), 2);
 		break;
 	case 1:			// filled circle
-		al_draw_filled_circle(x, y, 10, al_map_rgb(255, 255, 255));
+		al_draw_filled_circle(x, y, 10, al_map_rgb(color[0], color[1], color[2]));
 		break;
 	case 2:			// triangle (right side up)
-		al_draw_triangle(x - 10, y - 5, x, y + 5, x + 10, y - 5, al_map_rgb(255, 255, 255), 2);
+		al_draw_triangle(x - 10, y - 5, x, y + 5, x + 10, y - 5, al_map_rgb(color[0], color[1], color[2]), 2);
 		break;
 	case 3:			// filled triangle
-		al_draw_filled_triangle(x - 10, y - 5, x, y + 5, x + 10, y - 5, al_map_rgb(255, 255, 255));
+		al_draw_filled_triangle(x - 10, y - 5, x, y + 5, x + 10, y - 5, al_map_rgb(color[0], color[1], color[2]));
 		break;
 	case 4:			// square
-		al_draw_rectangle(x - 10, y - 10, x + 10, y + 10, al_map_rgb(255, 255, 255), 2);
+		al_draw_rectangle(x - 10, y - 10, x + 10, y + 10, al_map_rgb(color[0], color[1], color[2]), 2);
 		break;
 	case 5:			// filled square
-		al_draw_filled_rectangle(x - 10, y - 10, x + 10, y + 10, al_map_rgb(255, 255, 255));
+		al_draw_filled_rectangle(x - 10, y - 10, x + 10, y + 10, al_map_rgb(color[0], color[1], color[2]));
 		break;
 	case 6:			// x mark
-		al_draw_line(x - 10, y - 10, x + 10, y + 10, al_map_rgb(255, 255, 255), 4);
-		al_draw_line(x + 10, y + 10, x - 10, y - 10, al_map_rgb(255, 255, 255), 4);
+		al_draw_line(x - 10, y - 10, x + 10, y + 10, al_map_rgb(color[0], color[1], color[2]), 4);
+		al_draw_line(x + 10, y + 10, x - 10, y - 10, al_map_rgb(color[0], color[1], color[2]), 4);
 		break;
 	case 7:			// house
-		al_draw_filled_triangle(x - 12, y, x, y + 10, x - 12, y, al_map_rgb(255, 255, 255));
-		al_draw_rectangle(x - 10, y, x + 10, y + 10, al_map_rgb(255, 255, 255), 2);
+		al_draw_filled_triangle(x - 12, y, x, y + 10, x - 12, y, al_map_rgb(color[0], color[1], color[2]));
+		al_draw_rectangle(x - 10, y, x + 10, y + 10, al_map_rgb(color[0], color[1], color[2]), 2);
 		break;
 	case 8:			// smiley
-		al_draw_circle(x, y, 10, al_map_rgb(255, 255, 255), 2);
-		al_draw_filled_ellipse(x, y + 4, 4, 3, al_map_rgb(255, 255, 255));
+		al_draw_circle(x, y, 10, al_map_rgb(color[0], color[1], color[2]), 2);
+		al_draw_filled_ellipse(x, y + 4, 4, 3, al_map_rgb(color[0], color[1], color[2]));
 		al_draw_filled_ellipse(x, y + 3, 4, 3, al_map_rgb(0, 0, 0));
-		al_draw_filled_circle(x - 5, y - 4, 1, al_map_rgb(255, 255, 255));
-		al_draw_filled_circle(x + 5, y - 4, 1, al_map_rgb(255, 255, 255));
+		al_draw_filled_circle(x - 5, y - 4, 1, al_map_rgb(color[0], color[1], color[2]));
+		al_draw_filled_circle(x + 5, y - 4, 1, al_map_rgb(color[0], color[1], color[2]));
 		break;
 	case 9:			// heart
-		al_draw_filled_circle(x + 5, y - 5, 7, al_map_rgb(255, 255, 255));
-		al_draw_filled_circle(x - 5, y - 5, 7, al_map_rgb(255, 255, 255));
-		al_draw_filled_triangle(x - 14, y - 2 , x + 10, y + 10, x - 14, y - 2, al_map_rgb(255, 255, 255));
+		al_draw_filled_circle(x + 5, y - 5, 7, al_map_rgb(color[0], color[1], color[2]));
+		al_draw_filled_circle(x - 5, y - 5, 7, al_map_rgb(color[0], color[1], color[2]));
+		al_draw_filled_triangle(x - 14, y - 2 , x + 10, y + 10, x - 14, y - 2, al_map_rgb(color[0], color[1], color[2]));
 	case 10:		// diamond
-		al_draw_filled_triangle(x - 10, y, x, y - 10, x + 10, y, al_map_rgb(255, 255, 255));
-		al_draw_filled_triangle(x - 10, y, x, y + 10, x + 10, y, al_map_rgb(255, 255, 255));
+		al_draw_filled_triangle(x - 10, y, x, y - 10, x + 10, y, al_map_rgb(color[0], color[1], color[2]));
+		al_draw_filled_triangle(x - 10, y, x, y + 10, x + 10, y, al_map_rgb(color[0], color[1], color[2]));
 		break;
 	case 11:		// triangle (upside down)
-		al_draw_triangle(x - 10, y + 5, x, y - 5, x + 10, y + 5, al_map_rgb(255, 255, 255), 2);
+		al_draw_triangle(x - 10, y + 5, x, y - 5, x + 10, y + 5, al_map_rgb(color[0], color[1], color[2]), 2);
 		break;
 	case 12:		// single slash
-		al_draw_line(x - 10, y - 10, x + 10, y + 10, al_map_rgb(255, 255, 255), 4);
+		al_draw_line(x - 10, y - 10, x + 10, y + 10, al_map_rgb(color[0], color[1], color[2]), 4);
 		break;
 	}
 

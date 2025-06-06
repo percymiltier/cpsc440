@@ -16,8 +16,8 @@ public:
 	graphics(int displayheight, int displaywidth, board* newgameboard);
 
 	void drawBoard() const;
-	void drawCards();
-	void printShape(int x, int y, int shape);
+	void drawCards(int flag);
+	void printShape(int x, int y, int shape, int flag);
 	void drawScore(int score, ALLEGRO_FONT* font) const;
 
 	// helpers
