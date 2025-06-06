@@ -18,6 +18,7 @@ public:
 
 	int getLives();
 	int getScore();
+	void addPoint();
 private:
 	int x;
 	int y;

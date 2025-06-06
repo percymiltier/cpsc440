@@ -78,3 +78,6 @@ int player::getLives() {
 int player::getScore() {
 	return score;
 }
+void player::addPoint() {
+	score++;
+}

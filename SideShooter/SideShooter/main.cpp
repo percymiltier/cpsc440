@@ -29,12 +29,7 @@ int main(void)
 	al_init_font_addon();
 	al_init_ttf_addon();
 
-	//ALLEGRO_FONT* font24 = al_load_font("AppleGaramond.ttf", 24, 0);
 
-	//if (!font24) {
-	//	fprintf(stderr, "Failed to initialize font.");
-	//	return -1;
-	//}
 
 	//Allegro variables
 	ALLEGRO_DISPLAY *display = NULL;
@@ -60,6 +55,12 @@ int main(void)
 
 	event_queue = al_create_event_queue();
 	timer = al_create_timer(1.0 / FPS);
+	ALLEGRO_FONT* font24 = al_load_font("AppleGaramond.ttf", 24, 0);
+
+	if (!font24) {
+		fprintf(stderr, "Failed to initialize font.");
+		return -1;
+	}
 
 	srand(time(NULL));
 
@@ -95,7 +96,7 @@ int main(void)
 			for(int i=0;i<NUM_ghostS;i++)
 				ghosts[i].Updateghost();
 			for(int i=0;i<NUM_ArrowS;i++)
-				Arrows[i].CollideArrow(ghosts, NUM_ghostS);
+				Arrows[i].CollideArrow(ghosts, NUM_ghostS, &myPlayer);
 			for(int i=0;i<NUM_ghostS;i++)
 				ghosts[i].Collideghost(myPlayer);
 		}
@@ -164,6 +165,9 @@ int main(void)
 			for(int i=0;i<NUM_ghostS;i++)
 				ghosts[i].Drawghost();
 
+			al_draw_textf(font24, al_map_rgb(20, 255, 20), 10, 10, 0, "Health: %i/5", myPlayer.getLives());
+			al_draw_textf(font24, al_map_rgb(20, 20, 255), WIDTH-150, 10, 0, "Score: %i", myPlayer.getScore());
+
 			al_flip_display();
 			al_clear_to_color(al_map_rgb(0,0,0));
 		}
@@ -180,8 +184,11 @@ int main(void)
 	for (int i = 0;i < NUM_ghostS;i++) {
 		ghosts[i].Drawghost();
 	}
-	//al_draw_textf(font24, al_map_rgb(255, 20, 20), 50, 50, 0, "Good game! Final Score: %i", myPlayer.getScore());
+	al_draw_textf(font24, al_map_rgb(255, 20, 20), 10, 10, 0, "You died! Final Score: %i", myPlayer.getScore());
 
+	al_flip_display();
+
+	al_rest(5);
 
 	al_destroy_event_queue(event_queue);
 	al_destroy_timer(timer);
