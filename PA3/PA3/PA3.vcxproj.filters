@@ -43,11 +43,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Font Include="AppleGaramond.ttf">
-      <Filter>Resource Files</Filter>
-    </Font>
-  </ItemGroup>
-  <ItemGroup>
     <Image Include="bg.png">
       <Filter>Resource Files</Filter>
     </Image>
@@ -66,5 +61,10 @@
     <Image Include="miku3.png">
       <Filter>Resource Files</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="BondTime.ttf">
+      <Filter>Resource Files</Filter>
+    </Font>
   </ItemGroup>
 </Project>

@@ -56,7 +56,7 @@ int main(void)
 
 	event_queue = al_create_event_queue();
 	timer = al_create_timer(1.0 / FPS);
-	ALLEGRO_FONT* font24 = al_load_font("AppleGaramond.ttf", 24, 0);
+	ALLEGRO_FONT* font24 = al_load_font("BondTime.ttf", 30, 0);
 
 	if (!font24) {
 		fprintf(stderr, "Failed to initialize font.");
@@ -168,8 +168,8 @@ int main(void)
 			for (int i = 0;i < NUM_enemy;i++)
 				enemies[i].drawEnemy();
 
-			al_draw_textf(font24, al_map_rgb(20, 255, 20), 10, 10, 0, "Health: %i/5", myplayer.getHealth());
-			al_draw_textf(font24, al_map_rgb(20, 20, 255), WIDTH - 150, 10, 0, "Score: %i", myplayer.getScore());
+			al_draw_textf(font24, al_map_rgb(255, 208, 34), 10, 10, 0, "Health: %i/5", myplayer.getHealth());
+			al_draw_textf(font24, al_map_rgb(231, 56, 22), 10, 45, 0, "Score: %i", myplayer.getScore());
 
 			al_flip_display();
 			al_clear_to_color(al_map_rgb(129, 227, 231));
@@ -183,7 +183,7 @@ int main(void)
 	// draw final screen
 	al_draw_bitmap(bg, 0, 0, 0);
 	myplayer.drawPlayer(2);
-	al_draw_textf(font24, al_map_rgb(255, 20, 20), 10, 10, 0, "You died! Final Score: %i", myplayer.getScore());
+	al_draw_textf(font24, al_map_rgb(231, 56, 22), 10, 10, 0, "You died! Final Score: %i", myplayer.getScore());
 
 	al_flip_display();
 

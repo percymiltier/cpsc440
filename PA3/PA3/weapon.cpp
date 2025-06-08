@@ -26,8 +26,8 @@ void weapon::drawWeapon() {
 // fire weapon
 bool weapon::fireWeapon(player player) {
 	if (!live) {
-		x = player.getX() - (player.getBoundX() / 2);
-		y = player.getY() - (player.getBoundY() / 2);
+		x = player.getX() + (player.getBoundX() / 4);
+		y = player.getY();
 		live = true;
 		return true;
 	}
@@ -36,9 +36,8 @@ bool weapon::fireWeapon(player player) {
 // update weapon on screen
 void weapon::updateWeapon(player player) {
 	if (live) {
-		double radian_angle = ((angle + 64.0) / 0.711) * ((2 * M_PI) / 360.0);
-		x -= speed * cos(radian_angle);
-		y -= speed * sin(radian_angle);
+		x -= speed * cos(angle);
+		y -= speed * sin(angle);
 		if (al_get_bitmap_height(image) < 0) {
 			live = false;
 		}
@@ -68,5 +67,6 @@ void weapon::collideWeapon(enemy enemies[], int count, player* player) {
 void weapon::setAngle(player player) {
 	if (!live) {
 		angle = player.getAngle();
+		angle += 1.5;
 	}
 }
