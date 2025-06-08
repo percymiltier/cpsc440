@@ -145,8 +145,20 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="enemy.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="weapon.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="AppleGaramond.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="bg.png" />
+    <Image Include="miku1.png" />
+    <Image Include="miku2.png" />
+    <Image Include="miku3.png" />
+    <Image Include="puyo.png" />
+    <Image Include="rin.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

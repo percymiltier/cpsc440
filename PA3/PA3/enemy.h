@@ -15,7 +15,7 @@ public:
 
 	// misc
 	void drawEnemy();
-	void collideEnemy(player* player);
+	void collideEnemy(player* player, int height);
 	void startEnemy(int width);
 	void updateEnemy(int height);
 

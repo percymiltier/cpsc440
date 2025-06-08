@@ -38,5 +38,33 @@
     <ClCompile Include="weapon.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="AppleGaramond.ttf">
+      <Filter>Resource Files</Filter>
+    </Font>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="bg.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="miku1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="miku2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="puyo.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="rin.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="miku3.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

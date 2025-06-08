@@ -16,9 +16,10 @@ public:
 
 	// misc
 	void drawWeapon();
-	void fireWeapon(player player);
+	bool fireWeapon(player player);
 	void updateWeapon(player player);
 	void collideWeapon(enemy enemies[], int count, player* player);
+	void setAngle(player player);
 
 	// setters
 	void setX(int newx) { x = newx; }
@@ -26,6 +27,7 @@ public:
 	void setLive(bool newlive) { live = newlive; }
 private:
 	int x, y, speed;
+	double angle;
 	bool live;
 	ALLEGRO_BITMAP* image;
 };

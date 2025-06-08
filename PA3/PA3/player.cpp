@@ -7,13 +7,13 @@ player::player() {
 	y = 0;
 	score = 0;
 	health = 5;
-	image[0] = al_load_bitmap("");
-	image[1] = al_load_bitmap("");
+	image[0] = al_load_bitmap("miku1.png");
+	image[1] = al_load_bitmap("miku2.png");
+	image[2] = al_load_bitmap("miku3.png");
 	boundX = al_get_bitmap_width(image[0]);
 	boundY = al_get_bitmap_height(image[0]);
 
-	pointer = al_load_bitmap("");
-	pointer = al_load_bitmap("");
+	pointer = al_load_bitmap("pointer.png");
 	pointerW = al_get_bitmap_width(pointer);
 	pointerH = al_get_bitmap_height(pointer);
 }
@@ -23,12 +23,13 @@ player::player(int newx, int newy) {
 	y = newy;
 	score = 0;
 	health = 5;
-	image[0] = al_load_bitmap("");
-	image[1] = al_load_bitmap("");
+	image[0] = al_load_bitmap("miku1.png");
+	image[1] = al_load_bitmap("miku2.png");
+	image[2] = al_load_bitmap("miku3.png");
 	boundX = al_get_bitmap_width(image[0]);
 	boundY = al_get_bitmap_height(image[0]);
 
-	pointer = al_load_bitmap("");
+	pointer = al_load_bitmap("pointer.png");
 	pointerW = al_get_bitmap_width(pointer);
 	pointerH = al_get_bitmap_height(pointer);
 }
@@ -42,19 +43,19 @@ void player::drawPlayer(int flag) {
 }
 // draw pointer to display
 void player::drawPointer() {
-	al_draw_rotated_bitmap(pointer, (pointerW / 2), pointerW, x, y - pointerH / 2, angle, 0);
+	al_draw_rotated_bitmap(pointer, (pointerW / 2), pointerW, x + (boundX / 2), y - 30, angle, 0);
 }
 // move pointer left
 void player::moveLeft() {
 	angle -= .1;
-	if (angle < .2) {
-		angle = .2;
+	if (angle < -1.5) {
+		angle = -1.5;
 	}
 }
 // move pointer right
 void player::moveRight() {
 	angle += .1;
-	if (angle > 3.3) {
-		angle = 3.3;
+	if (angle > 1.5) {
+		angle = 1.5;
 	}
 }

@@ -6,7 +6,7 @@ enemy::enemy() {
 	y = 0;
 	speed = 5;
 	live = false;
-	image = al_load_bitmap("");
+	image = al_load_bitmap("rin.png");
 	boundX = al_get_bitmap_width(image);
 	boundY = al_get_bitmap_height(image);
 }
@@ -16,14 +16,14 @@ enemy::~enemy() {
 
 // misc
 void enemy::drawEnemy() {
-	al_draw_bitmap(image, x, y, 0);
-}
-void enemy::collideEnemy(player* player) {
 	if (live) {
-		if (x > (player->getX() - player->getBoundX()) &&
-			x < (player->getX() + player->getBoundX()) &&
-			y >(player->getY() - player->getBoundY()) &&
-			y < (player->getY() + player->getBoundY()))
+		al_draw_bitmap(image, x, y, 0);
+	}
+}
+void enemy::collideEnemy(player* player, int height) {
+	if (live) {
+		// hits below the player where the ground is
+		if (y > height - 50)
 		{
 			live = false;
 			player->takeHit();
@@ -32,9 +32,9 @@ void enemy::collideEnemy(player* player) {
 }
 void enemy::startEnemy(int width) {
 	if (!live) {
-		if (rand() % 500 == 0) {		// 0.002% spawn rate on each frame
+		if (rand() % 1000 == 0) {		// 0.001% spawn rate on each frame
 			live = true;
-			y = 0;
+			y = 0 - boundY;
 			x = rand() % width - boundX;
 		}
 	}

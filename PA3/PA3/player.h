@@ -37,7 +37,7 @@ public:
 private:
 	double angle;
 	int x, y, health, score, boundX, boundY, pointerW, pointerH;
-	ALLEGRO_BITMAP* image[2];
+	ALLEGRO_BITMAP* image[3];
 	ALLEGRO_BITMAP* pointer;
 };
 
