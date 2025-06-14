@@ -6,7 +6,7 @@
 using namespace std;
 class Sprite
 {
-	friend int collidedTL(int x, int y);
+	friend int collided(int x, int y);
 	friend int collidedTR(int x, int y);
 	friend int collidedBL(int x, int y);
 	friend int collidedBR(int x, int y);

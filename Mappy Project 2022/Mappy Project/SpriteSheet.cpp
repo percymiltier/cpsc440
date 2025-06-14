@@ -84,13 +84,13 @@ void Sprite::UpdateSprites(int width, int height, int dir) {
 		animationDirection = dir; 
 		//check for collided with foreground tiles 
 		if (animationDirection == 0) { 
-			if (collidedTL(x, y + frameHeight)) {
+			if (collided(x, y + frameHeight)) {
 				//collision detection to the left 
 				x = oldx - 2;
 				y = oldy; 
 			} 
 		} else if (animationDirection == 1) { 
-			if (collidedTL(x + frameWidth, y + frameHeight)) {
+			if (collided(x + frameWidth, y + frameHeight)) {
 				//collision detection to the right 
 				x = oldx - 2; 
 				y = oldy; 
@@ -102,7 +102,7 @@ void Sprite::UpdateSprites(int width, int height, int dir) {
 int Sprite::jumping(int jump, const int JUMPIT) { 
 	//handle jumping 
 	if (jump == JUMPIT) { 
-		if (!collidedTL(x + frameWidth / 2, y + frameHeight + 5))
+		if (!collided(x + frameWidth / 2, y + frameHeight + 5))
 			jump = 0; 
 	} else { 
 		y -= jump / 3;
@@ -117,9 +117,9 @@ int Sprite::jumping(int jump, const int JUMPIT) {
 			curFrame = 10; 
 		else curFrame = 11; 
 	} if (jump < 0) { 
-		if (collidedTL(x + frameWidth / 2, y + frameHeight)) {
+		if (collided(x + frameWidth / 2, y + frameHeight)) {
 			jump = JUMPIT; 
-			while (collidedTL(x + frameWidth / 2, y + frameHeight)) {
+			while (collided(x + frameWidth / 2, y + frameHeight)) {
 				y -= 3; 
 				if (y < 0) 
 					y = 0; 

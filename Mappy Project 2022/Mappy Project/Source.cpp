@@ -8,7 +8,7 @@
 #include <iostream>
 using namespace std;
 
-int collidedTL(int x, int y);  //Tile Collision
+int collided(int x, int y);  //Tile Collision
 bool endValue( int x, int y ); //End Block with the User Value = 8
 int main(void)
 {
@@ -215,31 +215,11 @@ int main(void)
 }
 
 
-
-int collidedTL(int x, int y)
+int collided(int x, int y)
 {
 	BLKSTR *blockdata;
 	blockdata = MapGetBlock(x/mapblockwidth, y/mapblockheight);
 	return blockdata->tl;
-}
-
-int collidedTR(int x, int y)
-{
-	BLKSTR* blockdata;
-	blockdata = MapGetBlock(x / mapblockwidth, y / mapblockheight);
-	return blockdata->tr;
-}
-int collidedBL(int x, int y)
-{
-	BLKSTR* blockdata;
-	blockdata = MapGetBlock(x / mapblockwidth, y / mapblockheight);
-	return blockdata->bl;
-}
-int collidedBR(int x, int y)
-{
-	BLKSTR* blockdata;
-	blockdata = MapGetBlock(x / mapblockwidth, y / mapblockheight);
-	return blockdata->br;
 }
 
 bool endValue( int x, int y )
@@ -248,7 +228,7 @@ bool endValue( int x, int y )
 	BLKSTR* data;
 	data = MapGetBlock( x/mapblockwidth, y/mapblockheight );
 
-	if( data->user1 == 8 )
+	if( data->user2 == 1 )
 	{
 		return true;
 	}else
