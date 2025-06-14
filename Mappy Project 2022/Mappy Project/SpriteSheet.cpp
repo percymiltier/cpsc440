@@ -67,7 +67,7 @@ void Sprite::UpdateSprites(int width, int height, int dir) {
 		x += 2; 
 		if (++frameCount > frameDelay) { 
 			frameCount = 0; 
-			if (++curFrame > maxFrame)
+			if (++curFrame > walkmaxframe)
 				curFrame = 1; 
 		} 
 	} else if (dir == 0) { 
@@ -76,7 +76,7 @@ void Sprite::UpdateSprites(int width, int height, int dir) {
 		x -= 2; 
 		if (++frameCount > frameDelay) { 
 			frameCount = 0; 
-			if (++curFrame > maxFrame) 
+			if (++curFrame > walkmaxframe)
 				curFrame = 1; 
 		} 
 	} else 

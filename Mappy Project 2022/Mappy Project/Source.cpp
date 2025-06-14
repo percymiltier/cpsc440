@@ -171,6 +171,9 @@ int main(void)
 			if (yOff > (mapheight * mapblockheight - HEIGHT)) 
 				yOff = mapheight * mapblockheight - HEIGHT;
 
+			// animated tiles
+			MapUpdateAnims();
+
 			//draw the background tiles
 			MapDrawBG(xOff,yOff, 0, 0, WIDTH, HEIGHT);
 
@@ -184,10 +187,23 @@ int main(void)
 		}
 	}
 
-	// wait
+	// final screen 
+	xOff = player.getX() + player.getWidth() - WIDTH / 2;
+	yOff = player.getY() + player.getHeight() - HEIGHT / 2;
+	if (xOff < 0) xOff = 0;
+	if (xOff > (mapwidth * mapblockwidth - WIDTH))
+		xOff = mapwidth * mapblockwidth - WIDTH;
+	if (yOff < 0)
+		yOff = 0;
+	if (yOff > (mapheight * mapblockheight - HEIGHT))
+		yOff = mapheight * mapblockheight - HEIGHT;
+	MapDrawBG(xOff, yOff, 0, 0, WIDTH, HEIGHT);
+	MapDrawFG(xOff, yOff, 0, 0, WIDTH, HEIGHT, 0);
+	jump = player.jumping(jump, JUMPIT);
+	player.DrawSprites(xOff, yOff);
 	al_draw_textf(font24, al_map_rgb(231, 56, 22), 10, 10, 0, "Game over! Game will close in 10 seconds!");
 	al_flip_display();
-
+	// wait
 	al_rest(10);
 
 
