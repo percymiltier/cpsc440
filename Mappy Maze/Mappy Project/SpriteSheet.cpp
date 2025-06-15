@@ -18,13 +18,13 @@ void Sprite::InitSprites(int width, int height)
 	curFrame = 0;
 	frameCount = 0;
 	frameDelay = 6;
-	frameWidth = 32;
-	frameHeight = 32;
+	frameWidth = 30;
+	frameHeight = 30;
 	animationColumns = 3;
 	animationRows = 1;
 	animationDirection = 1;
 
-	image = al_load_bitmap("carbuncle.bmp");
+	image = al_load_bitmap("carbuncle.png");
 }
 
 bool Sprite::CollisionEndBlock()
@@ -47,7 +47,7 @@ void Sprite::DrawSprites(int xoffset, int yoffset)
 void Sprite::moveUp(int height, int blockheight) {
 	int oldy = y;
 	y -= speed;
-	if (y > (height - blockheight) || collided(x, y)) {
+	if (collided(x, y)) {
 		// detect collision with border or wall
 		y = oldy;
 	}
@@ -56,7 +56,7 @@ void Sprite::moveUp(int height, int blockheight) {
 void Sprite::moveDown(int height, int blockheight) {
 	int oldy = y;
 	y += speed;
-	if (y < blockheight || collided(x, y)) {
+	if (collided(x, y + frameHeight)) {
 		// detect collision with border or wall
 		y = oldy;
 	}
@@ -65,7 +65,7 @@ void Sprite::moveDown(int height, int blockheight) {
 void Sprite::moveLeft(int width, int blockheight) {
 	int oldx = x;
 	x -= speed;
-	if (x < blockheight || collided(x, y)) {
+	if (collided(x, y)) {
 		// detect collision with border or wall
 		x = oldx;
 	}
@@ -74,7 +74,7 @@ void Sprite::moveLeft(int width, int blockheight) {
 void Sprite::moveRight(int width, int blockheight) {
 	int oldx = x;
 	x += speed;
-	if (x < width - blockheight || collided(x, y)) {
+	if (collided(x + frameWidth, y)) {
 		// detect collision with border or wall
 		x = oldx;
 	}

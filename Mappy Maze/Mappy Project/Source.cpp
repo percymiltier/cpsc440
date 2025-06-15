@@ -98,6 +98,11 @@ int main(void)
 			done = true;
 			break;
 		}
+		// check gameover
+		if (level > 3) {
+			done = true;
+			break;
+		}
 
 		ALLEGRO_EVENT ev;
 		al_wait_for_event(event_queue, &ev);
@@ -207,12 +212,12 @@ int main(void)
 			player.DrawSprites(xOff, yOff);
 
 			// timer on screen
-			if (counter / 60 > 10) {
-				al_draw_textf(font24, al_map_rgb(242, 187, 39), 10, 10, 0, "Time: %i", counter / 60);
+			if ((60 - (counter / 60)) > 10) {
+				al_draw_textf(font24, al_map_rgb(242, 187, 39), 10, 10, 0, "Time: %i", 60 - (counter / 60));
 			}
 			else {
 				// warning text
-				al_draw_textf(font24, al_map_rgb(245, 41, 8), 10, 10, 0, "Time: %i", counter / 60);
+				al_draw_textf(font24, al_map_rgb(245, 41, 8), 10, 10, 0, "Time: %i", 60 - (counter / 60));
 			}
 
 			al_flip_display();
@@ -235,7 +240,7 @@ int main(void)
 	player.DrawSprites(xOff, yOff);
 
 	// game over text
-	if (level == 3) {
+	if (level > 3) {
 		// finished every level
 		al_draw_textf(font24, al_map_rgb(242, 187, 39), 10, 10, 0, "Game complete! Thanks for playing!");
 	}
