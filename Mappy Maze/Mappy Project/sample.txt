@@ -1,0 +1,3 @@
+Collission tile
+None
+Game over! Closing in 10 seconds!
