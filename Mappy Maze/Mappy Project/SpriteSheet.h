@@ -28,6 +28,7 @@ public:
 
 	void setX(int newx) { x = newx; }
 	void setY(int newy) { y = newy; }
+	void setMoving(bool newm) { moving = newm; }
 private:
 	float x;
 	float y;
@@ -40,6 +41,7 @@ private:
 	int frameHeight;
 	int animationColumns;
 	int dir; // 0 = up, 1 = down, 2 = left, 3 = right
+	bool moving;
 
 	ALLEGRO_BITMAP *image;
 };

@@ -18,9 +18,10 @@ void Sprite::InitSprites(int width, int height)
 	curFrame = 0;
 	frameCount = 0;
 	frameDelay = 6;
-	frameWidth = 30;
+	frameWidth = 34;
 	frameHeight = 30;
 	animationColumns = 3;
+	moving = false;
 
 	image = al_load_bitmap("carbuncle.png");
 }
@@ -80,9 +81,12 @@ void Sprite::moveRight(int width, int blockheight) {
 }
 
 void Sprite::UpdateSprites() {
-	frameCount++;
-	if (frameCount > maxFrame) {
-		frameCount = 0;
+	if (moving) {
+		if (++frameCount > frameDelay) {
+			frameCount = 0;
+			if (++curFrame > maxFrame)
+				curFrame = 1;
+		}
 	}
 }
 

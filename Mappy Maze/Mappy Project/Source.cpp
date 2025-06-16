@@ -162,15 +162,19 @@ int main(void)
 				break;
 			case ALLEGRO_KEY_UP:
 				keys[UP] = true;
+				player.setMoving(true);
 				break;
 			case ALLEGRO_KEY_DOWN:
 				keys[DOWN] = true;
+				player.setMoving(true);
 				break;
 			case ALLEGRO_KEY_LEFT:
 				keys[LEFT] = true;
+				player.setMoving(true);
 				break;
 			case ALLEGRO_KEY_RIGHT:
 				keys[RIGHT] = true;
+				player.setMoving(true);
 				break;
 			case ALLEGRO_KEY_SPACE:
 				keys[SPACE] = true;
@@ -184,15 +188,19 @@ int main(void)
 				done = true;
 				break;
 			case ALLEGRO_KEY_UP:
+				player.setMoving(false);
 				keys[UP] = false;
 				break;
 			case ALLEGRO_KEY_DOWN:
+				player.setMoving(false);
 				keys[DOWN] = false;
 				break;
 			case ALLEGRO_KEY_LEFT:
+				player.setMoving(false);
 				keys[LEFT] = false;
 				break;
 			case ALLEGRO_KEY_RIGHT:
+				player.setMoving(false);
 				keys[RIGHT] = false;
 				break;
 			case ALLEGRO_KEY_SPACE:
