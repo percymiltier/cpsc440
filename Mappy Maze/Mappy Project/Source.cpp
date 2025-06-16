@@ -81,13 +81,36 @@ int main(void)
 	al_clear_to_color(al_map_rgb(0,0,0));
 	while(!done)
 	{
+
+		// reaching the goal
+		if (player.CollisionEndBlock()) {
+			levelOver = true;
+		}
+
 		// next level
 		if (levelOver && level <= 3) {
-			if (MapLoad("level%i.fmp", level))
-				return -5;
 			levelOver = false;
 			level++;
 			timer = 0;
+			counter = 0;
+			int xOff = 0;
+			int yOff = 0;
+			player.setX(64);
+			player.setY(64);
+			switch (level) {
+			case 1:
+				if (MapLoad("level1.fmp", 1))
+					return -5;
+				break;
+			case 2:
+				if (MapLoad("level2.fmp", 1))
+					return -5;
+				break;
+			case 3:
+				if (MapLoad("level3.fmp", 1))
+					return -5;
+				break;
+			}
 		}
 
 		counter++;
@@ -121,10 +144,6 @@ int main(void)
 			else if(keys[RIGHT]) {
 				player.moveRight(WIDTH, BLOCKHEIGHT);
 			}
-
-			// reaching the goal
-			if (player.CollisionEndBlock())
-				levelOver = true;
 
 			// redraw screen
 			render = true;
@@ -203,12 +222,14 @@ int main(void)
 
 			// animated tiles
 			MapUpdateAnims();
+			player.UpdateSprites();
 
-			//draw the background tiles
+			MapChangeLayer(0);
 			MapDrawBG(xOff,yOff, 0, 0, WIDTH, HEIGHT);
-
-			//draw foreground tiles
 			MapDrawFG(xOff,yOff, 0, 0, WIDTH, HEIGHT, 0);
+			MapChangeLayer(1);
+			MapDrawBG(xOff, yOff, 0, 0, WIDTH, HEIGHT);
+			MapDrawFG(xOff, yOff, 0, 0, WIDTH, HEIGHT, 0);
 			player.DrawSprites(xOff, yOff);
 
 			// timer on screen
@@ -235,6 +256,10 @@ int main(void)
 		yOff = 0;
 	if (yOff > (mapheight * mapblockheight - HEIGHT))
 		yOff = mapheight * mapblockheight - HEIGHT;
+	MapChangeLayer(0);
+	MapDrawBG(xOff, yOff, 0, 0, WIDTH, HEIGHT);
+	MapDrawFG(xOff, yOff, 0, 0, WIDTH, HEIGHT, 0);
+	MapChangeLayer(1);
 	MapDrawBG(xOff, yOff, 0, 0, WIDTH, HEIGHT);
 	MapDrawFG(xOff, yOff, 0, 0, WIDTH, HEIGHT, 0);
 	player.DrawSprites(xOff, yOff);
@@ -242,11 +267,13 @@ int main(void)
 	// game over text
 	if (level > 3) {
 		// finished every level
-		al_draw_textf(font24, al_map_rgb(242, 187, 39), 10, 10, 0, "Game complete! Thanks for playing!");
+		al_draw_textf(font24, al_map_rgb(242, 187, 39), 10, 10, 0, "Game complete!");
+		al_draw_textf(font24, al_map_rgb(242, 187, 39), 10, 38, 0, "Thanks for playing!");
 	}
 	else {
 		// didn't finish every level
-		al_draw_textf(font24, al_map_rgb(242, 187, 39), 10, 10, 0, "Game over! Final level: %i", level);
+		al_draw_textf(font24, al_map_rgb(242, 187, 39), 10, 10, 0, "Game over!");
+		al_draw_textf(font24, al_map_rgb(242, 187, 39), 10, 38, 0, "Final level: %i", level);
 	}
 
 	al_flip_display();

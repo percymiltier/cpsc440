@@ -25,6 +25,9 @@ public:
 	int getWidth() {return frameWidth;}
 	int getHeight() {return frameHeight;}
 	bool CollisionEndBlock();
+
+	void setX(int newx) { x = newx; }
+	void setY(int newy) { y = newy; }
 private:
 	float x;
 	float y;
@@ -36,8 +39,7 @@ private:
 	int frameWidth;
 	int frameHeight;
 	int animationColumns;
-	int animationRows;
-	int animationDirection;
+	int dir; // 0 = up, 1 = down, 2 = left, 3 = right
 
 	ALLEGRO_BITMAP *image;
 };
