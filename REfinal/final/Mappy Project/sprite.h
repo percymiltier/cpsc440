@@ -30,6 +30,7 @@ public:
 	float getY() { return y; }
 	int getWidth() { return frameWidth; }
 	int getHeight() { return frameHeight; }
+	int getHP() { return hp; }
 	bool CollisionEndBlock();
 
 	void setX(int newx) { x = newx; }

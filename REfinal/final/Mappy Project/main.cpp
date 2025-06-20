@@ -26,6 +26,7 @@ int main(void)
 	bool render = false;
 	bool levelOver = false;
 	int counter = 0;
+	bool dead = false;
 	//Player Variables
 	Sprite player;
 	enemy enemies[ENEMYNUM];
@@ -193,6 +194,10 @@ int main(void)
 			done = true;
 			break;
 		}
+		if (player.getHP() <= 0) {
+			done = true;
+			dead = true;
+		}
 
 		ALLEGRO_EVENT ev;
 		al_wait_for_event(event_queue, &ev);
@@ -325,37 +330,20 @@ int main(void)
 
 			al_flip_display();
 			al_clear_to_color(al_map_rgb(0, 0, 0));
+
 		}
 	}
 
-	// final screen 
-	xOff = player.getX() + player.getWidth() - WIDTH / 2;
-	yOff = player.getY() + player.getHeight() - HEIGHT / 2;
-	if (xOff < 0) xOff = 0;
-	if (xOff > (mapwidth * mapblockwidth - WIDTH))
-		xOff = mapwidth * mapblockwidth - WIDTH;
-	if (yOff < 0)
-		yOff = 0;
-	if (yOff > (mapheight * mapblockheight - HEIGHT))
-		yOff = mapheight * mapblockheight - HEIGHT;
-	MapChangeLayer(0);
-	MapDrawBG(xOff, yOff, 0, 0, WIDTH, HEIGHT);
-	MapDrawFG(xOff, yOff, 0, 0, WIDTH, HEIGHT, 0);
-	MapChangeLayer(1);
-	MapDrawBG(xOff, yOff, 0, 0, WIDTH, HEIGHT);
-	MapDrawFG(xOff, yOff, 0, 0, WIDTH, HEIGHT, 0);
-	player.DrawSprites(xOff, yOff);
+	// final screen
+	al_draw_bitmap(carbie, WIDTH / 2 + 75, HEIGHT / 3, 0);
 
-	// game over text
-	if (level > 3) {
-		// finished every level
-		al_draw_textf(font24, al_map_rgb(242, 187, 39), 10, 10, 0, "Game complete!");
-		al_draw_textf(font24, al_map_rgb(242, 187, 39), 10, 38, 0, "Thanks for playing!");
+	if (dead) {
+		al_draw_textf(font24, al_map_rgb(242, 187, 39), 10, HEIGHT / 2, 0, "You died!");
+		al_draw_textf(font24, al_map_rgb(242, 187, 39), 10, (HEIGHT / 2) + 30, 0, "Final level: %i", level);
 	}
 	else {
-		// didn't finish every level
-		al_draw_textf(font24, al_map_rgb(242, 187, 39), 10, 10, 0, "Game over!");
-		al_draw_textf(font24, al_map_rgb(242, 187, 39), 10, 38, 0, "Final level: %i", level);
+		al_draw_textf(font24, al_map_rgb(242, 187, 39), 10, HEIGHT / 2, 0, "Congratulations!");
+		al_draw_textf(font24, al_map_rgb(242, 187, 39), 10, (HEIGHT / 2) + 30, 0, "HP left: %i", player.getHP());
 	}
 
 	al_flip_display();
