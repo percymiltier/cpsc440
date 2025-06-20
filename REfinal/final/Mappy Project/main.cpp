@@ -3,6 +3,8 @@
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
+#include <allegro5\allegro_audio.h>
+#include <allegro5\allegro_acodec.h>
 #include "sprite.h"
 #include "enemy.h"
 #include "mappy_A5.h"
@@ -43,11 +45,28 @@ int main(void)
 	ALLEGRO_DISPLAY* display = NULL;
 	ALLEGRO_EVENT_QUEUE* event_queue = NULL;
 	ALLEGRO_TIMER* timer;
+	ALLEGRO_SAMPLE* sample = NULL;
 
 	//program init
 	if (!al_init())										//initialize Allegro
 		return -1;
 
+	if (!al_install_audio()) {
+		return -1;
+	}
+
+	if (!al_init_acodec_addon()) {
+		return -1;
+	}
+
+	if (!al_reserve_samples(4)) {
+		return -1;
+	}
+	sample = al_load_sample("bgm.wav");
+
+	if (!sample) {
+		exit(9);
+	}
 	display = al_create_display(WIDTH, HEIGHT);			//create our display object
 
 	if (!display)										//test display object
@@ -77,6 +96,7 @@ int main(void)
 
 	al_register_event_source(event_queue, al_get_timer_event_source(timer));
 	al_register_event_source(event_queue, al_get_keyboard_event_source());
+	al_play_sample(sample, 1.5, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, NULL);
 
 
 	// title loop

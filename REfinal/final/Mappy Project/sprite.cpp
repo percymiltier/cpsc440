@@ -3,10 +3,12 @@
 Sprite::Sprite()
 {
 	image = NULL;
+	sample = NULL;
 }
 Sprite::~Sprite()
 {
 	al_destroy_bitmap(image);
+	al_destroy_sample(sample);
 }
 void Sprite::InitSprites(int width, int height)
 {
@@ -32,6 +34,10 @@ void Sprite::InitSprites(int width, int height)
 	hp = 5;
 
 	image = al_load_bitmap("carbuncle.png");
+	sample = al_load_sample("hurtsound.wav");
+	if (!sample) {
+		exit(9);
+	}
 }
 
 bool Sprite::CollisionEndBlock()
@@ -141,6 +147,7 @@ void Sprite::takeHit() {
 	hp--;
 	hit = true;
 	hittimer = 0;
+	al_play_sample(sample, 0.50, 0.0, 2.0, ALLEGRO_PLAYMODE_ONCE, NULL);
 }
 
 void Sprite::UpdateSprites() {

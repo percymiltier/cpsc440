@@ -3,6 +3,8 @@
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
 #include <iostream>
+#include <allegro5\allegro_audio.h>
+#include <allegro5\allegro_acodec.h>
 using namespace std;
 
 #ifndef SPRITE_H
@@ -57,6 +59,7 @@ private:
 	int hp;
 
 	ALLEGRO_BITMAP* image;
+	ALLEGRO_SAMPLE* sample;
 };
 
 #endif
