@@ -1,23 +1,8 @@
 #include "enemy.h"
-#include <iostream>
-using namespace std;
+#include <allegro5/allegro_primitives.h>
 
 enemy::enemy() {
-	x = 0;
-	y = 0;
-	width = 32;
-	height = 32;
-	speed = 4;
-
-	collision = false;
-	live = false;
-
-	image = al_load_bitmap("enemy.png");
-	if (!image) {
-		// Handle error, e.g., log and exit or set a fallback
-		fprintf(stderr, "Failed to load enemy.png\n");
-		// Optionally trigger your own breakpoint or error handling
-	}
+	image = NULL;
 }
 
 enemy::~enemy() {
@@ -30,6 +15,16 @@ void enemy::initEnemy(bool living, int newx, int newy, int newspeed, int newtype
 	y = newy;
 	speed = newspeed;
 	type = newtype;
+
+	width = 32;
+	height = 32;
+	collision = false;
+
+	// set image
+	image = al_load_bitmap("enemy.png");
+	if (!image) {
+		fprintf(stderr, "Failed to load enemy.png\n");
+	}
 }
 
 void enemy::updateEnemy() {

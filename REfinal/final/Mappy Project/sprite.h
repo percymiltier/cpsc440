@@ -1,7 +1,10 @@
+#pragma once
+
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
+#include <iostream>
+using namespace std;
 
-#pragma once
 #ifndef SPRITE_H
 #define SPRITE_H
 
