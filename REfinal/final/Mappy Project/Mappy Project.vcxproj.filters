@@ -40,7 +40,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
     <None Include="level1.FMP">
       <Filter>Resource Files</Filter>
     </None>
@@ -50,6 +49,7 @@
     <None Include="level3.FMP">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="1.png">
