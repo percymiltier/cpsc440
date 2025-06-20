@@ -3,7 +3,8 @@
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
-#include "player.h"
+#include "sprite.h"
+#include "enemy.h"
 #include "mappy_A5.h"
 #include <iostream>
 using namespace std;
@@ -15,6 +16,7 @@ int main(void)
 	const int WIDTH = 448;
 	const int HEIGHT = 448;
 	const int BLOCKHEIGHT = 32;
+	const int ENEMYNUM = 10;
 	bool keys[] = { false, false, false, false, false };
 	enum KEYS { UP, DOWN, LEFT, RIGHT, SPACE };
 	//variables
@@ -23,9 +25,9 @@ int main(void)
 	bool render = false;
 	bool levelOver = false;
 	int counter = 0;
-	//myplayer Variable
-	player myplayer;
-
+	//Player Variables
+	Sprite player;
+	enemy enemies[ENEMYNUM];
 
 	// font
 	al_init_font_addon();
@@ -51,7 +53,7 @@ int main(void)
 	al_init_image_addon();
 	al_init_primitives_addon();
 
-	myplayer.initPlayer(WIDTH, HEIGHT);
+	player.InitSprites(WIDTH, HEIGHT);
 
 	int xOff = 0;
 	int yOff = 0;
@@ -76,18 +78,14 @@ int main(void)
 
 	//draw foreground tiles
 	MapDrawFG(xOff, yOff, 0, 0, WIDTH - 1, HEIGHT - 1, 0);
-	myplayer.drawPlayer(0, 0);
+	player.DrawSprites(0, 0);
 	al_flip_display();
 	al_clear_to_color(al_map_rgb(0, 0, 0));
-
-	// while loop for title screen
-
-	// game loop
 	while (!done)
 	{
 
 		// reaching the goal
-		if (myplayer.CollisionEndBlock()) {
+		if (player.CollisionEndBlock()) {
 			levelOver = true;
 		}
 
@@ -99,12 +97,22 @@ int main(void)
 			counter = 0;
 			int xOff = 0;
 			int yOff = 0;
-			myplayer.setX(64);
-			myplayer.setY(64);
+			player.setX(64);
+			player.setY(64);
 			switch (level) {
 			case 1:
-				if (MapLoad("level1.fmp", 1))
+				if (MapLoad("level1.fmp", 1)) {
+					// reset enemies before setting up the new level
+					for (int i = 0; i < ENEMYNUM; i++) {
+						enemies[i].setLive(false);
+					}
+					// level 1 setup, has only 3 enemies
+					enemies[0].initEnemy(true, 160, 192, 2, 0);
+					enemies[1].initEnemy(true, 384, 192, 2, 0);
+					enemies[2].initEnemy(true, 608, 192, 2, 0);
+
 					return -5;
+				}
 				break;
 			case 2:
 				if (MapLoad("level2.fmp", 1))
@@ -137,16 +145,16 @@ int main(void)
 		{
 			// movement
 			if (keys[UP]) {
-				myplayer.moveUp(HEIGHT, BLOCKHEIGHT);
+				player.moveUp(HEIGHT, BLOCKHEIGHT);
 			}
 			else if (keys[DOWN]) {
-				myplayer.moveDown(HEIGHT, BLOCKHEIGHT);
+				player.moveDown(HEIGHT, BLOCKHEIGHT);
 			}
 			else if (keys[LEFT]) {
-				myplayer.moveLeft(WIDTH, BLOCKHEIGHT);
+				player.moveLeft(WIDTH, BLOCKHEIGHT);
 			}
 			else if (keys[RIGHT]) {
-				myplayer.moveRight(WIDTH, BLOCKHEIGHT);
+				player.moveRight(WIDTH, BLOCKHEIGHT);
 			}
 
 			// redraw screen
@@ -166,19 +174,19 @@ int main(void)
 				break;
 			case ALLEGRO_KEY_UP:
 				keys[UP] = true;
-				myplayer.setMoving(true);
+				player.setMoving(true);
 				break;
 			case ALLEGRO_KEY_DOWN:
 				keys[DOWN] = true;
-				myplayer.setMoving(true);
+				player.setMoving(true);
 				break;
 			case ALLEGRO_KEY_LEFT:
 				keys[LEFT] = true;
-				myplayer.setMoving(true);
+				player.setMoving(true);
 				break;
 			case ALLEGRO_KEY_RIGHT:
 				keys[RIGHT] = true;
-				myplayer.setMoving(true);
+				player.setMoving(true);
 				break;
 			case ALLEGRO_KEY_SPACE:
 				keys[SPACE] = true;
@@ -192,19 +200,19 @@ int main(void)
 				done = true;
 				break;
 			case ALLEGRO_KEY_UP:
-				myplayer.setMoving(false);
+				player.setMoving(false);
 				keys[UP] = false;
 				break;
 			case ALLEGRO_KEY_DOWN:
-				myplayer.setMoving(false);
+				player.setMoving(false);
 				keys[DOWN] = false;
 				break;
 			case ALLEGRO_KEY_LEFT:
-				myplayer.setMoving(false);
+				player.setMoving(false);
 				keys[LEFT] = false;
 				break;
 			case ALLEGRO_KEY_RIGHT:
-				myplayer.setMoving(false);
+				player.setMoving(false);
 				keys[RIGHT] = false;
 				break;
 			case ALLEGRO_KEY_SPACE:
@@ -219,8 +227,8 @@ int main(void)
 			render = false;
 
 			//update the map scroll position
-			xOff = myplayer.getX() + myplayer.getWidth() - WIDTH / 2;
-			yOff = myplayer.getY() + myplayer.getHeight() - HEIGHT / 2;
+			xOff = player.getX() + player.getWidth() - WIDTH / 2;
+			yOff = player.getY() + player.getHeight() - HEIGHT / 2;
 
 			//avoid moving beyond the map edge
 			if (xOff < 0) xOff = 0;
@@ -234,7 +242,11 @@ int main(void)
 
 			// animated tiles
 			MapUpdateAnims();
-			myplayer.updatePlayer();
+			player.UpdateSprites();
+			for (int i = 0; i < ENEMYNUM; i++) {
+				enemies[i].updateEnemy();
+				enemies[i].hitSprite(player);
+			}
 
 			MapChangeLayer(0);
 			MapDrawBG(xOff, yOff, 0, 0, WIDTH, HEIGHT);
@@ -242,7 +254,10 @@ int main(void)
 			MapChangeLayer(1);
 			MapDrawBG(xOff, yOff, 0, 0, WIDTH, HEIGHT);
 			MapDrawFG(xOff, yOff, 0, 0, WIDTH, HEIGHT, 0);
-			myplayer.drawPlayer(xOff, yOff);
+			player.DrawSprites(xOff, yOff);
+			for (int i = 0; i < ENEMYNUM; i++) {
+				enemies[i].drawEnemy();
+			}
 
 			// timer on screen
 			if ((60 - (counter / 60)) > 10) {
@@ -258,7 +273,39 @@ int main(void)
 		}
 	}
 
-	// ending screen
+	// final screen 
+	xOff = player.getX() + player.getWidth() - WIDTH / 2;
+	yOff = player.getY() + player.getHeight() - HEIGHT / 2;
+	if (xOff < 0) xOff = 0;
+	if (xOff > (mapwidth * mapblockwidth - WIDTH))
+		xOff = mapwidth * mapblockwidth - WIDTH;
+	if (yOff < 0)
+		yOff = 0;
+	if (yOff > (mapheight * mapblockheight - HEIGHT))
+		yOff = mapheight * mapblockheight - HEIGHT;
+	MapChangeLayer(0);
+	MapDrawBG(xOff, yOff, 0, 0, WIDTH, HEIGHT);
+	MapDrawFG(xOff, yOff, 0, 0, WIDTH, HEIGHT, 0);
+	MapChangeLayer(1);
+	MapDrawBG(xOff, yOff, 0, 0, WIDTH, HEIGHT);
+	MapDrawFG(xOff, yOff, 0, 0, WIDTH, HEIGHT, 0);
+	player.DrawSprites(xOff, yOff);
+
+	// game over text
+	if (level > 3) {
+		// finished every level
+		al_draw_textf(font24, al_map_rgb(242, 187, 39), 10, 10, 0, "Game complete!");
+		al_draw_textf(font24, al_map_rgb(242, 187, 39), 10, 38, 0, "Thanks for playing!");
+	}
+	else {
+		// didn't finish every level
+		al_draw_textf(font24, al_map_rgb(242, 187, 39), 10, 10, 0, "Game over!");
+		al_draw_textf(font24, al_map_rgb(242, 187, 39), 10, 38, 0, "Final level: %i", level);
+	}
+
+	al_flip_display();
+	// wait
+	al_rest(10);
 
 
 	MapFreeMem();
@@ -290,7 +337,7 @@ int collided(int x, int y) // modified to get all collissions since we don't nee
 	}
 }
 
-bool endValue(int x, int y) // determines when the myplayer reaches the end of a level
+bool endValue(int x, int y) // determines when the player reaches the end of a level
 {
 
 	BLKSTR* data;

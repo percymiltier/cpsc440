@@ -84,14 +84,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="enemy.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mappy_A5.c" />
-    <ClCompile Include="player.cpp" />
+    <ClCompile Include="sprite.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="enemy.h" />
     <ClInclude Include="mappy_A5.h" />
-    <ClInclude Include="player.h" />
+    <ClInclude Include="sprite.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
