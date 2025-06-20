@@ -1,5 +1,10 @@
 #include "sprite.h"
 
+#include <allegro5/allegro.h>
+#include <iostream>
+#include <allegro5\allegro_acodec.h>
+using namespace std;
+
 Sprite::Sprite()
 {
 	image = NULL;

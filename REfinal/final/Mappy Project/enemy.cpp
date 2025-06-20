@@ -1,5 +1,9 @@
 #include "enemy.h"
 
+#include <allegro5/allegro.h>
+#include <iostream>
+using namespace std;
+
 enemy::enemy() {
 	image = NULL;
 }

@@ -1,11 +1,5 @@
 #pragma once
-
-#include <allegro5/allegro.h>
-#include <allegro5/allegro_primitives.h>
-#include <allegro5/allegro_image.h>
-#include <iostream>
 #include "sprite.h"
-using namespace std;
 
 #ifndef ENEMY_H
 #define ENEMY_H
@@ -29,7 +23,7 @@ private:
 	int type; // 0 = horizontal, 1 = vertical
 	int direction = 1; // flips directions for each enemy, can be -1 or 1
 
-	ALLEGRO_BITMAP* image;
+	ALLEGRO_BITMAP *image;
 };
 
 #endif

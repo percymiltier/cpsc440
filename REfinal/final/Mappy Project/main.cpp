@@ -1,13 +1,13 @@
 #include <allegro5/allegro.h>
-#include <allegro5/allegro_image.h>
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
-#include <allegro5\allegro_audio.h>
 #include <allegro5\allegro_acodec.h>
+
 #include "sprite.h"
 #include "enemy.h"
 #include "mappy_A5.h"
+
 #include <iostream>
 using namespace std;
 
@@ -33,8 +33,6 @@ int main(void)
 	Sprite player;
 	enemy enemies[ENEMYNUM];
 
-	// extra image
-	ALLEGRO_BITMAP* carbie = al_load_bitmap("altcarbie.png");
 
 	// font
 	al_init_font_addon();
@@ -46,6 +44,7 @@ int main(void)
 	ALLEGRO_EVENT_QUEUE* event_queue = NULL;
 	ALLEGRO_TIMER* timer;
 	ALLEGRO_SAMPLE* sample = NULL;
+	ALLEGRO_BITMAP* carbie = NULL;
 
 	//program init
 	if (!al_init())										//initialize Allegro
@@ -93,6 +92,12 @@ int main(void)
 		return -1;
 	}
 
+	// extra image
+	carbie = al_load_bitmap("altcarbie.png");
+	if (!carbie) {
+		fprintf(stderr, "cant find carbie\n");
+		exit(-2);
+	}
 
 	al_register_event_source(event_queue, al_get_timer_event_source(timer));
 	al_register_event_source(event_queue, al_get_keyboard_event_source());
