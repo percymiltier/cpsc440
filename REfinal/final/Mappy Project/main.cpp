@@ -110,15 +110,17 @@ int main(void)
 	int framedelay = 10;
 	int framecount = 0;
 	while (titlescreen) {
-		// draw carbie
-		al_draw_bitmap(carbie, WIDTH / 2 + 75, HEIGHT / 3, 0);
 
-		al_draw_textf(font24, al_map_rgb(242, 187, 39), 10, 10, 0, "Press any key to start");
-		al_draw_textf(font24, al_map_rgb(242, 187, 39), 10, HEIGHT/2, 0, "Avoid touching the enemies");
-		al_draw_textf(font24, al_map_rgb(242, 187, 39), 10, (HEIGHT / 2) + 30, 0, "and reach the goal!");
+		al_draw_filled_rectangle(0, 0, WIDTH, HEIGHT, al_map_rgb(139, 170, 207));
+		// draw carbie
+		al_draw_bitmap(carbie, WIDTH / 2 - 60, 100, 0);
+
+		al_draw_textf(font24, al_map_rgb(242, 187, 39), 40, 10, 0, "Press any key to start");
+		al_draw_textf(font24, al_map_rgb(242, 187, 39), 34, 300, 0, "Avoid touching enemies");
+		al_draw_textf(font24, al_map_rgb(242, 187, 39), 54, 330, 0, "and reach the goal!");
 
 		al_flip_display();
-		al_clear_to_color(al_map_rgb(0, 0, 0));
+		al_clear_to_color(al_map_rgb(139, 170, 207));
 
 		// press any key to continue
 		ALLEGRO_EVENT ev;
