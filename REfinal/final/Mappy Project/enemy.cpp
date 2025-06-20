@@ -19,17 +19,11 @@ void enemy::initEnemy(bool living, int newx, int newy, int newspeed, int newtype
 	height = 32;
 	collision = false;
 
-	// set image
-	image = al_create_bitmap(32, 32);
-	al_set_target_bitmap(image);
-	al_draw_filled_rectangle(0, 0, 32, 32, al_map_rgb(240, 0, 0));
-	/*
 	image = al_load_bitmap("enemy.png");
 	if (!image) {
 		fprintf(stderr, "Failed to load enemy.png\n");
 		exit(-2);
 	}
-	*/
 }
 
 void enemy::updateEnemy() {

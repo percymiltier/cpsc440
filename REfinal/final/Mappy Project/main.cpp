@@ -339,6 +339,11 @@ int main(void)
 				enemies[i].drawEnemy(xOff, yOff);
 			}
 
+			// health bar
+			al_draw_textf(font24, al_map_rgb(242, 187, 39), 10, HEIGHT - 30, 0, "HP:");
+			al_draw_filled_rectangle(60, HEIGHT - 30, 110, HEIGHT - 6, al_map_rgb(255, 255, 255));
+			al_draw_filled_rectangle(60, HEIGHT - 30, 60 + (player.getHP() * 10), HEIGHT - 6, al_map_rgb(0, 255, 0));
+
 			// timer on screen
 			if ((60 - (counter / 60)) > 10) {
 				al_draw_textf(font24, al_map_rgb(242, 187, 39), 10, 10, 0, "Time: %i", 60 - (counter / 60));
