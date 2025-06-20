@@ -11,6 +11,7 @@ public:
 	enemy();
 	~enemy();
 
+	void loadEnemyMap();
 	void initEnemy(bool living, int newx, int newy, int newspeed, int newtype);
 	void updateEnemy();
 	void drawEnemy(int xoffset, int yoffset);

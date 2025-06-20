@@ -12,6 +12,14 @@ enemy::~enemy() {
 	al_destroy_bitmap(image);
 }
 
+void enemy::loadEnemyMap() {
+	image = al_load_bitmap("enemy.png");
+	if (!image) {
+		fprintf(stderr, "Failed to load enemy.png\n");
+		exit(-2);
+	}
+}
+
 void enemy::initEnemy(bool living, int newx, int newy, int newspeed, int newtype) {
 	live = living;
 	x = newx;
@@ -23,11 +31,6 @@ void enemy::initEnemy(bool living, int newx, int newy, int newspeed, int newtype
 	height = 32;
 	collision = false;
 
-	image = al_load_bitmap("enemy.png");
-	if (!image) {
-		fprintf(stderr, "Failed to load enemy.png\n");
-		exit(-2);
-	}
 }
 
 void enemy::updateEnemy() {

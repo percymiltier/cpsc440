@@ -31,7 +31,6 @@ int main(void)
 	bool dead = false;
 	//Player Variables
 	Sprite player;
-	enemy enemies[ENEMYNUM];
 
 
 	// font
@@ -76,6 +75,10 @@ int main(void)
 	al_init_image_addon();
 	al_init_primitives_addon();
 
+	enemy enemies[ENEMYNUM];
+	for (int i = 0; i < ENEMYNUM; i++) {
+		enemies[i].loadEnemyMap();
+	}
 	player.InitSprites(WIDTH, HEIGHT);
 
 	int xOff = 0;
