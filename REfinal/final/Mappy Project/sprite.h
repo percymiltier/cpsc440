@@ -49,6 +49,10 @@ private:
 	int dir; // 0 = up, 1 = down, 2 = left, 3 = right
 	bool moving;
 
+	bool hit;
+	int hittimer;
+	int tint[3];
+
 	int hp;
 
 	ALLEGRO_BITMAP* image;

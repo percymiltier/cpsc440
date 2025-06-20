@@ -22,6 +22,12 @@ void Sprite::InitSprites(int width, int height)
 	frameHeight = 30;
 	animationColumns = 3;
 	moving = false;
+	
+	hit = false;
+	hittimer = 0;
+	tint[0] = 255;
+	tint[1] = 255;
+	tint[2] = 255;
 
 	hp = 5;
 
@@ -41,11 +47,23 @@ void Sprite::DrawSprites(int xoffset, int yoffset)
 	int fx = (curFrame % animationColumns) * frameWidth;
 	int fy = 0;
 
+	// change color on hit
+	if (hit) {
+		tint[0] = 255;
+		tint[1] = 0;
+		tint[2] = 0;
+	}
+	else {
+		tint[0] = 255;
+		tint[1] = 255;
+		tint[2] = 255;
+	}
+
 	switch (dir) {
 	case 0:
 		// up
 		al_draw_tinted_scaled_rotated_bitmap_region(image, fx, fy, frameWidth, frameHeight, // region
-			al_map_rgb(255, 255, 255),														// tint
+			al_map_rgb(tint[0], tint[1], tint[2]),											// tint
 			frameWidth/2, frameHeight/2,													// center
 			x + (frameWidth / 2) - xoffset, y + (frameHeight / 2) - yoffset, 1, 1,			// destination + scale
 			3,																			// rotate here
@@ -54,7 +72,7 @@ void Sprite::DrawSprites(int xoffset, int yoffset)
 	case 1:
 		// down
 		al_draw_tinted_scaled_rotated_bitmap_region(image, fx, fy, frameWidth, frameHeight, // region
-			al_map_rgb(255, 255, 255),														// tint
+			al_map_rgb(tint[0], tint[1], tint[2]),											// tint
 			frameWidth / 2, frameHeight / 2,												// center
 			x + (frameWidth / 2) - xoffset, y + (frameHeight / 2) - yoffset, 1, 1,			// destination + scale
 			0,																			// rotate here
@@ -63,7 +81,7 @@ void Sprite::DrawSprites(int xoffset, int yoffset)
 	case 2:
 		// left
 		al_draw_tinted_scaled_rotated_bitmap_region(image, fx, fy, frameWidth, frameHeight, // region
-			al_map_rgb(255, 255, 255),														// tint
+			al_map_rgb(tint[0], tint[1], tint[2]),											// tint
 			frameWidth / 2, frameHeight / 2,												// center
 			x + (frameWidth / 2) - xoffset, y + (frameHeight/2) - yoffset, 1, 1,			// destination + scale
 			1.5,																		// rotate here
@@ -72,7 +90,7 @@ void Sprite::DrawSprites(int xoffset, int yoffset)
 	case 3:
 		// right
 		al_draw_tinted_scaled_rotated_bitmap_region(image, fx, fy, frameWidth, frameHeight, // region
-			al_map_rgb(255, 255, 255),														// tint
+			al_map_rgb(tint[0], tint[1], tint[2]),											// tint
 			frameWidth / 2, frameHeight / 2,												// center
 			x + (frameWidth / 2) - xoffset, y + (frameHeight / 2) - yoffset, 1, 1,			// destination + scale
 			4.5,																		// rotate here
@@ -121,6 +139,8 @@ void Sprite::moveRight(int width, int blockheight) {
 
 void Sprite::takeHit() {
 	hp--;
+	hit = true;
+	hittimer = 0;
 }
 
 void Sprite::UpdateSprites() {
@@ -130,5 +150,9 @@ void Sprite::UpdateSprites() {
 			if (++curFrame > maxFrame)
 				curFrame = 1;
 		}
+	}
+	if (++hittimer > 60) {
+		hit = false;
+		hittimer = 0;
 	}
 }

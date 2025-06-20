@@ -20,6 +20,7 @@ int main(void)
 	bool keys[] = { false, false, false, false, false };
 	enum KEYS { UP, DOWN, LEFT, RIGHT, SPACE };
 	//variables
+	bool titlescreen = true;
 	bool done = false;
 	int level = 1;
 	bool render = false;
@@ -28,6 +29,9 @@ int main(void)
 	//Player Variables
 	Sprite player;
 	enemy enemies[ENEMYNUM];
+
+	// extra image
+	ALLEGRO_BITMAP* carbie = al_load_bitmap("altcarbie.png");
 
 	// font
 	al_init_font_addon();
@@ -69,8 +73,35 @@ int main(void)
 		return -1;
 	}
 
+
 	al_register_event_source(event_queue, al_get_timer_event_source(timer));
 	al_register_event_source(event_queue, al_get_keyboard_event_source());
+
+
+	// title loop
+	double angle = 1;
+	double addsub = .1;
+	int framedelay = 10;
+	int framecount = 0;
+	while (titlescreen) {
+		// draw carbie
+		al_draw_bitmap(carbie, WIDTH / 2 + 75, HEIGHT / 3, 0);
+
+		al_draw_textf(font24, al_map_rgb(242, 187, 39), 10, 10, 0, "Press any key to start");
+		al_draw_textf(font24, al_map_rgb(242, 187, 39), 10, HEIGHT/2, 0, "Avoid touching the enemies");
+		al_draw_textf(font24, al_map_rgb(242, 187, 39), 10, (HEIGHT / 2) + 30, 0, "and reach the goal!");
+
+		al_flip_display();
+		al_clear_to_color(al_map_rgb(0, 0, 0));
+
+		// press any key to continue
+		ALLEGRO_EVENT ev;
+		al_wait_for_event(event_queue, &ev);
+		if (ev.type == ALLEGRO_EVENT_KEY_DOWN)
+		{
+			titlescreen = false;
+		}
+	}
 
 	al_start_timer(timer);
 	//draw the background tiles
@@ -95,32 +126,56 @@ int main(void)
 			level++;
 			timer = 0;
 			counter = 0;
-			int xOff = 0;
-			int yOff = 0;
+			xOff = 0;
+			yOff = 0;
 			player.setX(64);
 			player.setY(64);
 			switch (level) {
 			case 1:
 				if (MapLoad("level1.fmp", 1)) {
-					// reset enemies before setting up the new level
-					for (int i = 0; i < ENEMYNUM; i++) {
-						enemies[i].setLive(false);
-					}
-					// level 1 setup, has only 3 enemies
-					enemies[0].initEnemy(true, 160, 192, 2, 0);
-					enemies[1].initEnemy(true, 384, 192, 2, 0);
-					enemies[2].initEnemy(true, 608, 192, 2, 0);
-
 					return -5;
 				}
+				// reset enemies before setting up the new level
+				for (int i = 0; i < ENEMYNUM; i++) {
+					enemies[i].setLive(false);
+				}
+				// level 1 setup, has only 3 enemies
+				enemies[0].initEnemy(true, 160, 192, 2, 0);
+				enemies[1].initEnemy(true, 384, 192, 2, 0);
+				enemies[2].initEnemy(true, 608, 192, 2, 0);
+
 				break;
 			case 2:
-				if (MapLoad("level2.fmp", 1))
+				if (MapLoad("level2.fmp", 1)) {
 					return -5;
+				}
+				// reset enemies before setting up the new level
+				for (int i = 0; i < ENEMYNUM; i++) {
+					enemies[i].setLive(false);
+				}
+				// level 2 setup, has  5 enemies
+				enemies[0].initEnemy(true, 224, 96, 2, 1);
+				enemies[1].initEnemy(true, 96, 288, 2, 0);
+				enemies[2].initEnemy(true, 512, 224, 2, 0);
+				enemies[3].initEnemy(true, 704, 128, 2, 0);
+				enemies[4].initEnemy(true, 640, 224, 2, 0);
 				break;
 			case 3:
-				if (MapLoad("level3.fmp", 1))
+				if (MapLoad("level3.fmp", 1)) {
 					return -5;
+				}
+				// reset enemies before setting up the new level
+				for (int i = 0; i < ENEMYNUM; i++) {
+					enemies[i].setLive(false);
+				}
+				// level 2 setup, has  7 enemies
+				enemies[0].initEnemy(true, 192, 96, 2, 1);
+				enemies[1].initEnemy(true, 256, 288, 2, 0);
+				enemies[2].initEnemy(true, 320, 224, 2, 0);
+				enemies[3].initEnemy(true, 384, 128, 2, 0);
+				enemies[4].initEnemy(true, 448, 224, 2, 0);
+				enemies[5].initEnemy(true, 512, 224, 2, 0);
+				enemies[6].initEnemy(true, 476, 224, 2, 0);
 				break;
 			}
 		}
@@ -256,7 +311,7 @@ int main(void)
 			MapDrawFG(xOff, yOff, 0, 0, WIDTH, HEIGHT, 0);
 			player.DrawSprites(xOff, yOff);
 			for (int i = 0; i < ENEMYNUM; i++) {
-				enemies[i].drawEnemy();
+				enemies[i].drawEnemy(xOff, yOff);
 			}
 
 			// timer on screen

@@ -41,5 +41,39 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="level1.FMP">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="level2.FMP">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="level3.FMP">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="3.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="carbuncle.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="enemy.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="tilesheet.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="BondTime.ttf">
+      <Filter>Resource Files</Filter>
+    </Font>
   </ItemGroup>
 </Project>

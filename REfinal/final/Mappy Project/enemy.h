@@ -1,5 +1,11 @@
 #pragma once
+
+#include <allegro5/allegro.h>
+#include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro_image.h>
+#include <iostream>
 #include "sprite.h"
+using namespace std;
 
 #ifndef ENEMY_H
 #define ENEMY_H
@@ -13,7 +19,7 @@ public:
 
 	void initEnemy(bool living, int newx, int newy, int newspeed, int newtype);
 	void updateEnemy();
-	void drawEnemy();
+	void drawEnemy(int xoffset, int yoffset);
 	void hitSprite(Sprite player);
 
 	void setLive(bool newl) { live = newl; }

@@ -95,7 +95,21 @@
     <ClInclude Include="sprite.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="level1.FMP" />
+    <None Include="level2.FMP" />
+    <None Include="level3.FMP" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="1.png" />
+    <Image Include="2.png" />
+    <Image Include="3.png" />
+    <Image Include="carbuncle.png" />
+    <Image Include="enemy.png" />
+    <Image Include="tilesheet.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="BondTime.ttf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

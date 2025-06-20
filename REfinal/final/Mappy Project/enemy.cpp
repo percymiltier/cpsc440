@@ -1,5 +1,4 @@
 #include "enemy.h"
-#include <allegro5/allegro_primitives.h>
 
 enemy::enemy() {
 	image = NULL;
@@ -21,10 +20,16 @@ void enemy::initEnemy(bool living, int newx, int newy, int newspeed, int newtype
 	collision = false;
 
 	// set image
+	image = al_create_bitmap(32, 32);
+	al_set_target_bitmap(image);
+	al_draw_filled_rectangle(0, 0, 32, 32, al_map_rgb(240, 0, 0));
+	/*
 	image = al_load_bitmap("enemy.png");
 	if (!image) {
 		fprintf(stderr, "Failed to load enemy.png\n");
+		exit(-2);
 	}
+	*/
 }
 
 void enemy::updateEnemy() {
@@ -67,9 +72,9 @@ void enemy::updateEnemy() {
 	}
 }
 
-void enemy::drawEnemy() {
+void enemy::drawEnemy(int xoffset, int yoffset) {
 	if (live) {
-		al_draw_bitmap(image, x, y, 0);
+		al_draw_bitmap(image, x - xoffset, y - yoffset, 0);
 	}
 }
 
