@@ -12,7 +12,6 @@ class Sprite
 	friend bool endValue(int x, int y);
 public:
 	Sprite();
-	~Sprite();
 	void InitSprites(int width, int height);
 	void UpdateSprites();
 	void DrawSprites(int xoffset, int yoffset);
@@ -28,6 +27,7 @@ public:
 	int getWidth() { return frameWidth; }
 	int getHeight() { return frameHeight; }
 	int getHP() { return hp; }
+	bool getHit() { return hit; }
 	bool CollisionEndBlock();
 
 	void setX(int newx) { x = newx; }

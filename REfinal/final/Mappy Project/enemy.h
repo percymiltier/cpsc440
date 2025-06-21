@@ -15,7 +15,7 @@ public:
 	void initEnemy(bool living, int newx, int newy, int newspeed, int newtype);
 	void updateEnemy();
 	void drawEnemy(int xoffset, int yoffset);
-	void hitSprite(Sprite player);
+	void hitSprite(Sprite* player);
 
 	void setLive(bool newl) { live = newl; }
 private:

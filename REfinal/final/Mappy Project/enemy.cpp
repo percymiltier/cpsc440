@@ -1,6 +1,7 @@
 #include "enemy.h"
 
 #include <allegro5/allegro.h>
+#include <allegro5\allegro_audio.h>
 #include <iostream>
 using namespace std;
 
@@ -42,7 +43,7 @@ void enemy::updateEnemy() {
 		case 0:
 			// horizontal enemy
 			x += speed * direction;
-			if (collided(x + width, y + (height / 2))) {
+			if (collided(x + width, y) || collided(x, y)) {
 				// detect collision with border or wall
 				x = oldx;
 				// flip movement
@@ -57,7 +58,7 @@ void enemy::updateEnemy() {
 		case 1:
 			// vertical enemy
 			y += speed * direction;
-			if (collided(x + width, y + (height / 2))) {
+			if (collided(x, y + height) || collided(x, y)) {
 				// detect collision with border or wall
 				y = oldy;
 				// flip movement
@@ -79,12 +80,14 @@ void enemy::drawEnemy(int xoffset, int yoffset) {
 	}
 }
 
-void enemy::hitSprite(Sprite player) {
-	// detect collision with player and take hp if hit
-	if (live) {
-		if (x > player.getX() && x < (player.getX() + player.getWidth())
-			&& y > player.getY() && y < (player.getY() + player.getHeight())) {
-			player.takeHit();
+void enemy::hitSprite(Sprite* player) {
+	// detect collision with player and take hp if hit, getting hit grants immunity
+	if (!player->getHit()) {
+		if (live) {
+			if (x > player->getX() && x < (player->getX() + player->getWidth())
+				&& y > player->getY() && y < (player->getY() + player->getHeight())) {
+				player->takeHit();
+			}
 		}
 	}
 }

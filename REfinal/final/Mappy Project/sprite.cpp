@@ -3,17 +3,13 @@
 #include <allegro5/allegro.h>
 #include <iostream>
 #include <allegro5\allegro_acodec.h>
+#include <allegro5\allegro_audio.h>
 using namespace std;
 
 Sprite::Sprite()
 {
 	image = NULL;
 	sample = NULL;
-}
-Sprite::~Sprite()
-{
-	al_destroy_bitmap(image);
-	al_destroy_sample(sample);
 }
 void Sprite::InitSprites(int width, int height)
 {
@@ -163,8 +159,10 @@ void Sprite::UpdateSprites() {
 				curFrame = 1;
 		}
 	}
-	if (++hittimer > 60) {
-		hit = false;
-		hittimer = 0;
+	if (hit) { // hit grants 1.5 seconds immunity
+		if (++hittimer > 90) {
+			hit = false;
+			hittimer = 0;
+		}
 	}
 }

@@ -3,6 +3,7 @@
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
 #include <allegro5\allegro_acodec.h>
+#include <allegro5\allegro_audio.h>
 
 #include "sprite.h"
 #include "enemy.h"
@@ -31,6 +32,7 @@ int main(void)
 	bool dead = false;
 	//Player Variables
 	Sprite player;
+	enemy enemies[ENEMYNUM];
 
 
 	// font
@@ -75,7 +77,6 @@ int main(void)
 	al_init_image_addon();
 	al_init_primitives_addon();
 
-	enemy enemies[ENEMYNUM];
 	for (int i = 0; i < ENEMYNUM; i++) {
 		enemies[i].loadEnemyMap();
 	}
@@ -83,8 +84,6 @@ int main(void)
 
 	int xOff = 0;
 	int yOff = 0;
-	if (MapLoad("level1.fmp", 1))
-		return -5;
 
 	event_queue = al_create_event_queue();
 	timer = al_create_timer(1.0 / 60);
@@ -135,12 +134,53 @@ int main(void)
 	}
 
 	al_start_timer(timer);
-	//draw the background tiles
-	MapDrawBG(xOff, yOff, 0, 0, WIDTH - 1, HEIGHT - 1);
 
-	//draw foreground tiles
-	MapDrawFG(xOff, yOff, 0, 0, WIDTH - 1, HEIGHT - 1, 0);
+	// load first level
+	if (MapLoad("level1.fmp", 1)) {
+		return -5;
+	}
+
+	// draw map
+	MapChangeLayer(0);
+	MapDrawBG(xOff, yOff, 0, 0, WIDTH, HEIGHT);
+	MapDrawFG(xOff, yOff, 0, 0, WIDTH, HEIGHT, 0);
+	MapChangeLayer(1);
+	MapDrawBG(xOff, yOff, 0, 0, WIDTH, HEIGHT);
+	MapDrawFG(xOff, yOff, 0, 0, WIDTH, HEIGHT, 0);
+
+	// draw player 
 	player.DrawSprites(0, 0);
+
+	// reset enemies before setting up the new level
+	for (int i = 0; i < ENEMYNUM; i++) {
+		enemies[i].setLive(false);
+	}
+
+	// level 1 setup, has only 3 enemies
+	enemies[0].initEnemy(true, 160, 192, 2, 0);
+	enemies[1].initEnemy(true, 384, 192, 2, 0);
+	enemies[2].initEnemy(true, 608, 192, 2, 0);
+
+	// draw enemies
+	for (int i = 0; i < ENEMYNUM; i++) {
+		enemies[i].drawEnemy(xOff, yOff);
+	}
+
+	// health bar
+	al_draw_textf(font24, al_map_rgb(242, 187, 39), 5, HEIGHT - 40, 0, "HP:");
+	al_draw_filled_rectangle(58, HEIGHT - 32, 162, HEIGHT - 4, al_map_rgb(0, 0, 0));
+	al_draw_filled_rectangle(60, HEIGHT - 30, 160, HEIGHT - 6, al_map_rgb(255, 255, 255));
+	al_draw_filled_rectangle(60, HEIGHT - 30, 60 + (player.getHP() * 20), HEIGHT - 6, al_map_rgb(0, 255, 0));
+
+	// timer on screen
+	if ((60 - (counter / 60)) > 10) {
+		al_draw_textf(font24, al_map_rgb(242, 187, 39), 10, 10, 0, "Time: %i", 60 - (counter / 60));
+	}
+	else {
+		// warning text
+		al_draw_textf(font24, al_map_rgb(245, 41, 8), 10, 10, 0, "Time: %i", 60 - (counter / 60));
+	}
+
 	al_flip_display();
 	al_clear_to_color(al_map_rgb(0, 0, 0));
 	while (!done)
@@ -162,20 +202,6 @@ int main(void)
 			player.setX(64);
 			player.setY(64);
 			switch (level) {
-			case 1:
-				if (MapLoad("level1.fmp", 1)) {
-					return -5;
-				}
-				// reset enemies before setting up the new level
-				for (int i = 0; i < ENEMYNUM; i++) {
-					enemies[i].setLive(false);
-				}
-				// level 1 setup, has only 3 enemies
-				enemies[0].initEnemy(true, 160, 192, 2, 0);
-				enemies[1].initEnemy(true, 384, 192, 2, 0);
-				enemies[2].initEnemy(true, 608, 192, 2, 0);
-
-				break;
 			case 2:
 				if (MapLoad("level2.fmp", 1)) {
 					return -5;
@@ -188,8 +214,15 @@ int main(void)
 				enemies[0].initEnemy(true, 224, 96, 2, 1);
 				enemies[1].initEnemy(true, 96, 288, 2, 0);
 				enemies[2].initEnemy(true, 512, 224, 2, 0);
-				enemies[3].initEnemy(true, 704, 128, 2, 0);
+				enemies[3].initEnemy(true, 702, 128, 2, 0);
 				enemies[4].initEnemy(true, 640, 224, 2, 0);
+
+				for (int i = 0; i < ENEMYNUM; i++) {
+					enemies[i].drawEnemy(xOff, yOff);
+				}
+
+				al_flip_display();
+				al_clear_to_color(al_map_rgb(0, 0, 0));
 				break;
 			case 3:
 				if (MapLoad("level3.fmp", 1)) {
@@ -201,12 +234,19 @@ int main(void)
 				}
 				// level 2 setup, has  7 enemies
 				enemies[0].initEnemy(true, 192, 96, 2, 1);
-				enemies[1].initEnemy(true, 256, 288, 2, 0);
-				enemies[2].initEnemy(true, 320, 224, 2, 0);
-				enemies[3].initEnemy(true, 384, 128, 2, 0);
-				enemies[4].initEnemy(true, 448, 224, 2, 0);
-				enemies[5].initEnemy(true, 512, 224, 2, 0);
-				enemies[6].initEnemy(true, 476, 224, 2, 0);
+				enemies[1].initEnemy(true, 256, 288, 2, 1);
+				enemies[2].initEnemy(true, 320, 224, 2, 1);
+				enemies[3].initEnemy(true, 384, 128, 2, 1);
+				enemies[4].initEnemy(true, 448, 224, 2, 1);
+				enemies[5].initEnemy(true, 512, 256, 2, 1);
+				enemies[6].initEnemy(true, 576, 320, 2, 1);
+
+				for (int i = 0; i < ENEMYNUM; i++) {
+					enemies[i].drawEnemy(xOff, yOff);
+				}
+
+				al_flip_display();
+				al_clear_to_color(al_map_rgb(0, 0, 0));
 				break;
 			}
 		}
@@ -335,7 +375,7 @@ int main(void)
 			player.UpdateSprites();
 			for (int i = 0; i < ENEMYNUM; i++) {
 				enemies[i].updateEnemy();
-				enemies[i].hitSprite(player);
+				enemies[i].hitSprite(&player);
 			}
 
 			MapChangeLayer(0);
@@ -350,9 +390,10 @@ int main(void)
 			}
 
 			// health bar
-			al_draw_textf(font24, al_map_rgb(242, 187, 39), 10, HEIGHT - 30, 0, "HP:");
-			al_draw_filled_rectangle(60, HEIGHT - 30, 110, HEIGHT - 6, al_map_rgb(255, 255, 255));
-			al_draw_filled_rectangle(60, HEIGHT - 30, 60 + (player.getHP() * 10), HEIGHT - 6, al_map_rgb(0, 255, 0));
+			al_draw_textf(font24, al_map_rgb(242, 187, 39), 5, HEIGHT - 40, 0, "HP:");
+			al_draw_filled_rectangle(58, HEIGHT - 32, 162, HEIGHT - 4, al_map_rgb(0, 0, 0));
+			al_draw_filled_rectangle(60, HEIGHT - 30, 160, HEIGHT - 6, al_map_rgb(255, 255, 255));
+			al_draw_filled_rectangle(60, HEIGHT - 30, 60 + (player.getHP() * 20), HEIGHT - 6, al_map_rgb(0, 255, 0));
 
 			// timer on screen
 			if ((60 - (counter / 60)) > 10) {
